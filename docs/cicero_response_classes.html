@@ -1,0 +1,2752 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>cicero_response_classes.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>cicero_response_classes.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">_key_copy</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="n">lhs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">rhs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">_copy_keys</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="n">lhs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">rhs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">AbstractCiceroObject</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">(</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <h1>IdentifierObject</h1>
+<p>This class represents the attributes of any external identifiers
+that most officials have - Facebook page, Twitter, Project VoteSmart, etc</p>
+<p><a href="https://cicero.azavea.com/docs/identifier.html">Cicero Documentation</a>  </p>
+<h2>Available Attributes (all types can also be None/empty strings):</h2>
+<ul>
+<li>.valid_from (string) - datetime this identifier started being valid  </li>
+<li>.official (integer)  - Cicero unique ID of the official owning this identifier  </li>
+<li>.valid_to (string)   - datetime this identifier will no longer be valid  </li>
+<li>.sk (integer)        - historical surrogate key for this identifier  </li>
+<li>.last_update_date (string) - datetime this identifier was last updated</li>
+<li>.identifier_type (string) - Possible identifier types include, but<br />
+    aren't limited to:<ul>
+<li>"CRP"      - Center for Responsive Politics  </li>
+<li>"BIOGUIDE" - Congressional Biographical Directory  </li>
+<li>"FACEBOOK" - Facebook  </li>
+<li>"FEC"      - Federal Election Commission  </li>
+<li>"FLICKR"   - Flickr  </li>
+<li>"GOOGLEPLUS" - Google+  </li>
+<li>"GOVTRACK" - GovTrack  </li>
+<li>"Picasa"   - Picasa  </li>
+<li>"VOTESMART" - Project Vote Smart  </li>
+<li>"RSS"      - RSS Feeds  </li>
+<li>"TWITTER"  - Twitter  </li>
+<li>"YOUTUBE"  - YouTube  </li>
+</ul>
+</li>
+<li>.id (integer)        - Cicero unique ID of this identifier  </li>
+<li>.identifier_value (string) - username, account, or full or partial web URL<br />
+    for this external identifier  </li>
+<li>.<strong>dict</strong> (dictionary) - As with any Python class, this IdentiferObject
+    can be navigated by Python ['dictionary']['bracket']['notation']  </li>
+</ul>
+<h3>Geocoded response structure:</h3>
+<ul>
+<li>response  <ul>
+<li>results  <ul>
+<li>candidates[list]  <ul>
+<li>officials[list]  <ul>
+<li>identifiers[list of IdentifierObjects, sorted by<br />
+    "identifier_type" ascending]  </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Non-geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results  <ul>
+<li>officials[list]  <ul>
+<li>identifiers[list of IdentifierObjects, sorted by
+    "identifier_type" ascending]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">IdentifierObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">identifier_dict</span><span class="p">,</span>
+                   <span class="p">(</span><span class="s">&#39;valid_from&#39;</span><span class="p">,</span> <span class="s">&#39;valid_to&#39;</span><span class="p">,</span> <span class="s">&#39;sk&#39;</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;official&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;last_update_date&#39;</span><span class="p">,</span> <span class="s">&#39;identifier_type&#39;</span><span class="p">,</span> <span class="s">&#39;identifier_value&#39;</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <h1>CommitteeObject</h1>
+<p>This class represents the attributes of a committee a legislator belongs to.
+Committees are an antiquated feature of Cicero and few officials are
+associated with them, so this information may not be up to date.</p>
+<p><a href="https://cicero.azavea.com/docs/committee.html">Cicero documentation</a></p>
+<h2>Available Attributes (all types can also be None/empty strings):</h2>
+<ul>
+<li>.valid_from (string) - datetime this committee started being valid</li>
+<li>.description (string) - text description of this committee</li>
+<li>.valid_to (string)   - datetime this committee will no longer be valid</li>
+<li>.sk (integer)        - historical surrogate key for this committee</li>
+<li>.last_update_date (string) - datetime this committee was last updated</li>
+<li>.id (integer)        - Cicero unique ID of this committee</li>
+</ul>
+<h3>Geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>candidates[list]<ul>
+<li>officials[list]<ul>
+<li>committees[list of CommitteeObjects]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Non-geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>officials[list]<ul>
+<li>committees[list of CommitteeObjects]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">CommitteeObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comm_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">comm_dict</span><span class="p">,</span>
+                   <span class="p">(</span><span class="s">&#39;valid_from&#39;</span><span class="p">,</span> <span class="s">&#39;description&#39;</span><span class="p">,</span> <span class="s">&#39;valid_to&#39;</span><span class="p">,</span> <span class="s">&#39;sk&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;last_update_date&#39;</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <h1>CountryObject</h1>
+<p>This class represents the attributes of a country object within a
+GovernmentObject (itself in turn within a ChamberObject), OR
+a "representing_country" object within an OfficeObject
+(itself within an OfficialObject).</p>
+<p><a href="https://cicero.azavea.com/docs/country.html">Cicero documentation</a></p>
+<h2>Available Attributes (all types can also be None/empty strings):</h2>
+<ul>
+<li>.status (string) - status of this country (often "UN Member State")</li>
+<li>.name_short (string) - country short name</li>
+<li>.name_short_iso (string) - ISO recognized short name</li>
+<li>.name_short_local (string) - country short name in local language</li>
+<li>.name_short_un (string) - country's UN recognized name</li>
+<li>.name_long_local (string) - country long name in local language</li>
+<li>.name_long (string) - country long name</li>
+<li>.gmi_3 (string) - http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3</li>
+<li>.iso_3 (string) - http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3</li>
+<li>.iso_2 (string) - http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</li>
+<li>.iso_3_numeric (integer) - http://en.wikipedia.org/wiki/ISO_3166-1_numeric</li>
+<li>.valid_from (string)   - datetime this country started being valid</li>
+<li>.valid_to (string) - datetime this country will no longer be valid</li>
+<li>.last_update_date (string) - datetime this country was last updated</li>
+<li>.id (integer) - Cicero unique ID</li>
+<li>.sk (integer) - Cicero surrogate key for historical queries</li>
+<li>.fips (string) - http://en.wikipedia.org/wiki/FIPS_10</li>
+</ul>
+<h3>Geocoded response structures:</h3>
+<ul>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>candidates[list]<ul>
+<li>officials[list]<ul>
+<li>office<ul>
+<li>representing_country (a CountryObject)  </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>candidates[list]<ul>
+<li>officials[list]<ul>
+<li>chamber<ul>
+<li>government<ul>
+<li>country (a CountryObject)  </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>candidates[list]<ul>
+<li>election_events[list]<ul>
+<li>chambers[list]<ul>
+<li>government<ul>
+<li>country (a CountryObject)  </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Non-geocoded response structures:</h3>
+<ul>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>officials[list]<ul>
+<li>office<ul>
+<li>representing_country (a CountryObject)  </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>officials[list]<ul>
+<li>chamber<ul>
+<li>government<ul>
+<li>country (a CountryObject)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>election_events[list]<ul>
+<li>chambers[list]<ul>
+<li>government<ul>
+<li>country (a CountryObject)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">CountryObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">country_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">country_dict</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">,</span> <span class="s">&#39;name_short&#39;</span><span class="p">,</span> <span class="s">&#39;gmi_3&#39;</span><span class="p">,</span> <span class="s">&#39;valid_from&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;name_short_iso&#39;</span><span class="p">,</span> <span class="s">&#39;name_short_local&#39;</span><span class="p">,</span> <span class="s">&#39;valid_to&#39;</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;sk&#39;</span><span class="p">,</span> <span class="s">&#39;name_short_un&#39;</span><span class="p">,</span> <span class="s">&#39;fips&#39;</span><span class="p">,</span> <span class="s">&#39;last_update_date&#39;</span><span class="p">,</span> <span class="s">&#39;iso_3&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;iso_2&#39;</span><span class="p">,</span> <span class="s">&#39;iso_3_numeric&#39;</span><span class="p">,</span> <span class="s">&#39;name_long_local&#39;</span><span class="p">,</span> <span class="s">&#39;name_long&#39;</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <h1>GovernmentObject</h1>
+<p>This class represents a government, within an official's ChamberObject.</p>
+<p><a href="https://cicero.azavea.com/docs/government.html">Cicero documentation</a></p>
+<h2>Available Attributes (all types can also be None/empty strings):</h2>
+<ul>
+<li>.city (string) - Local place where government is located</li>
+<li>.state (string) - State/province/territory where government is located</li>
+<li>.name (string) - name of government</li>
+<li>.country (CountryObject) - CountryObject which this government is a part of</li>
+<li>.notes (string) - notes about the government</li>
+<li>.type (string) - level of government: LOCAL, STATE, NATIONAL or TRANSNATIONAL</li>
+</ul>
+<h3>Geocoded response structures:</h3>
+<ul>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>candidates[list]<ul>
+<li>officials[list]<ul>
+<li>chamber<ul>
+<li>government (a GovernmentObject)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>candidates[list]<ul>
+<li>election_events[list]<ul>
+<li>chambers[list]<ul>
+<li>government (a GovernmentObject)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Non-geocoded response structures:</h3>
+<ul>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>officials[list]<ul>
+<li>chamber<ul>
+<li>government (a GovernmentObject)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>election_events[list]<ul>
+<li>chambers[list]<ul>
+<li>government (a GovernmentObject)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">GovernmentObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gov_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">gov_dict</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;city&#39;</span><span class="p">,</span> <span class="s">&#39;state&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;notes&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">))</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">country</span> <span class="o">=</span> <span class="n">CountryObject</span><span class="p">(</span><span class="n">gov_dict</span><span class="p">[</span><span class="s">&#39;country&#39;</span><span class="p">])</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      <h1>ChamberObject</h1>
+<p>This class represents the chamber an official serves in
+(legislature, senate, house of representatives, etc).</p>
+<p><a href="https://cicero.azavea.com/docs/chamber.html">Cicero documentation</a></p>
+<h2>Available Attributes (all types can also be None/empty strings):</h2>
+<ul>
+<li>.id (integer) - Cicero unique ID</li>
+<li>.type (string) - Chamber type, LOWER or UPPER or EXEC</li>
+<li>.official_count (integer) - number of officials in this chamber</li>
+<li>.is_chamber_complete (boolean) - Are all officials for this chamber
+    available in Cicero?</li>
+<li>.has_geographic_representation (boolean) - Are representatives in this
+    chamber determined with geographic districts?</li>
+<li>.name_native_language (string)</li>
+<li>.name_formal (string)</li>
+<li>.name (string)</li>
+<li>.url (string) - general URL for this chamber</li>
+<li>.contact_email (string) - general contact email for this chamber</li>
+<li>.contact_phone (string) - general contact phone for this chamber</li>
+<li>.government (GovernmentObject) - Government this Chamber is a part of</li>
+<li>.election_rules (string)</li>
+<li>.election_frequency (string)</li>
+<li>.term_length (string)</li>
+<li>.term_limit (string)</li>
+<li>.redistricting_rules (string)</li>
+<li>.inauguration_rules (string)</li>
+<li>.vacancy_rules (string)</li>
+<li>.last_update_date (string) - datetime this chamber was last updated</li>
+<li>.legislature_update_date (string)</li>
+<li>.notes (string) - general notes</li>
+<li>.remarks (string) - general remarks</li>
+</ul>
+<h3>Geocoded response structures:</h3>
+<ul>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>candidates[list]<ul>
+<li>officials[list]<ul>
+<li>chamber</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>candidates[list]<ul>
+<li>election_events[list]<ul>
+<li>chambers[list of ChamberObjects]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Non-geocoded response structures:</h3>
+<ul>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>officials[list]<ul>
+<li>chamber</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>election_events[list]<ul>
+<li>chambers[list of ChamberObjects]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ChamberObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chamber_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">chamber_dict</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;official_count&#39;</span><span class="p">,</span> <span class="s">&#39;is_chamber_complete&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;has_geographic_representation&#39;</span><span class="p">,</span> <span class="s">&#39;name_native_language&#39;</span><span class="p">,</span> 
+                    <span class="s">&#39;name_formal&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;url&#39;</span><span class="p">,</span> <span class="s">&#39;contact_email&#39;</span><span class="p">,</span> <span class="s">&#39;contact_phone&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;election_rules&#39;</span><span class="p">,</span> <span class="s">&#39;election_frequency&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;term_length&#39;</span><span class="p">,</span> <span class="s">&#39;term_limit&#39;</span><span class="p">,</span> <span class="s">&#39;redistricting_rules&#39;</span><span class="p">,</span> 
+                    <span class="s">&#39;inauguration_rules&#39;</span><span class="p">,</span> <span class="s">&#39;vacancy_rules&#39;</span><span class="p">,</span> <span class="s">&#39;last_update_date&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;legislature_update_date&#39;</span><span class="p">,</span> <span class="s">&#39;notes&#39;</span><span class="p">,</span> <span class="s">&#39;remarks&#39;</span><span class="p">))</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">government</span> <span class="o">=</span> <span class="n">GovernmentObject</span><span class="p">(</span><span class="n">chamber_dict</span><span class="p">[</span><span class="s">&#39;government&#39;</span><span class="p">])</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      <h1>ElectionEventObject</h1>
+<p>This class represents an election event object.</p>
+<p><a href="https://cicero.azavea.com/docs/election_event.html">Cicero documentation</a></p>
+<h2>Available Attributes (all types can also be None/empty strings):</h2>
+<ul>
+<li>.is_approximate (boolean) - is the election date appoximated or precise?</li>
+<li>.last_update_date (string) - datetime this election event was last updated</li>
+<li>.remarks (string) - general remarks</li>
+<li>.chambers (list of ChamberObjects) - chambers this election is for</li>
+<li>.election_date_text (string) - "DD Month Year" text representation of
+    election date</li>
+<li>.valid_from (string) - datetime from when this election is valid</li>
+<li>.is_national (boolean) - National election?</li>
+<li>.is_state (boolean) - State election?</li>
+<li>.is_by_election (boolean) - Is this a by, "bye", or special election?</li>
+<li>.is_referendum (boolean) - Is this election for a referendum?</li>
+<li>.valid_to (string) - datetime when this election event ceases to be valid</li>
+<li>.label (string) - Textual label / name for this election</li>
+<li>.sk (integer) - Cicero surrogate key for historical queries</li>
+<li>.id (integer) - Cicero unique id of this election event</li>
+<li>.is_primary_election (boolean) - Is this election a primary?</li>
+<li>.urls (list of strings) - web URLs for more information about this election</li>
+<li>.is_runoff_election (boolean) - Is this election a runoff?</li>
+<li>.is_transnational (boolean) - Is this election transnational?</li>
+</ul>
+<h3>Geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>candidates[list]<ul>
+<li>election_events[list of ElectionEventObjects]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Non-geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>election_events[list of ElectionEventObjects]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ElectionEventObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">election_event_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">election_event_dict</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;is_approximate&#39;</span><span class="p">,</span> <span class="s">&#39;last_update_date&#39;</span><span class="p">,</span> <span class="s">&#39;remarks&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;election_date_text&#39;</span><span class="p">,</span> <span class="s">&#39;valid_from&#39;</span><span class="p">,</span> <span class="s">&#39;is_national&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;is_state&#39;</span><span class="p">,</span> <span class="s">&#39;is_by_election&#39;</span><span class="p">,</span> <span class="s">&#39;is_referendum&#39;</span><span class="p">,</span> <span class="s">&#39;valid_to&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;label&#39;</span><span class="p">,</span> <span class="s">&#39;sk&#39;</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;is_primary_election&#39;</span><span class="p">,</span> <span class="s">&#39;urls&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;is_runoff_election&#39;</span><span class="p">,</span> <span class="s">&#39;is_transnational&#39;</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
+      </div>
+      <p>because .chambers is a list of ChamberObjects, we can't use _copy_keys
+and will define it here</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="bp">self</span><span class="o">.</span><span class="n">chambers</span> <span class="o">=</span> <span class="p">[</span><span class="n">ChamberObject</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">election_event_dict</span><span class="p">[</span><span class="s">&#39;chambers&#39;</span><span class="p">]]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-24'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-24'>#</a>
+      </div>
+      <h1>DistrictObject</h1>
+<p>This class represents a legislative or nonlegislative district object.
+The same object is returned with either the official API call or either
+legislative or nonlegislative district calls.</p>
+<p><a href="https://cicero.azavea.com/docs/district.html">Cicero documentation</a></p>
+<h2>Available Attributes (all types can also be None/empty strings):</h2>
+<ul>
+<li>.district_type (string) - name_short value for this district's
+    <a href="https://cicero.azavea.com/docs/district_type.html">main type</a></li>
+<li>.city (string) - local municipality this district represents</li>
+<li>.valid_from (string) - datetime from when this district is valid</li>
+<li>.country (string) - Country that this district represents</li>
+<li>.district_id (string) - This district's vernacular ID, specific to the district type</li>
+<li>.valid_to (string) - datetime this district is valid until</li>
+<li>.label (string) - associated with district_id, or a full text label for the district</li>
+<li>.sk (integer) - Cicero surrogate key for historical queries</li>
+<li>.subtype (string) - subtypes for CENSUS, SCHOOL, WATERSHED listed in Cicero docs</li>
+<li>.state (string) - State this district is a part of</li>
+<li>.last_update_date (string) - datetime this district was last updated</li>
+<li>
+<p>.data (dictionary) - additional data/info for this district.
+    Keys differ for each district type (ie, census, school, watershed, etc).
+    Therefore, unlike the rest of the wrapper which can be navigated using
+    dot.style.notation, one must navigate the values in "data"
+    ['like']['a']['dictionary'].</p>
+</li>
+<li>
+<p>.id (integer) - Cicero unique ID</p>
+</li>
+</ul>
+<h3>Geocoded response structures:</h3>
+<ul>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>candidates[list]<ul>
+<li>officials[list]<ul>
+<li>office<ul>
+<li>district</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>candidates[list]<ul>
+<li>districts[list of DistrictObjects]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Non-geocoded response structures:</h3>
+<ul>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>officials[list]<ul>
+<li>office<ul>
+<li>district</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>response</p>
+<ul>
+<li>results<ul>
+<li>districts[list of DistrictObjects]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">DistrictObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-25'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-25'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-26'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-26'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">district_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">district_dict</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;district_type&#39;</span><span class="p">,</span> <span class="s">&#39;city&#39;</span><span class="p">,</span> <span class="s">&#39;valid_from&#39;</span><span class="p">,</span> <span class="s">&#39;country&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;district_id&#39;</span><span class="p">,</span> <span class="s">&#39;valid_to&#39;</span><span class="p">,</span> <span class="s">&#39;label&#39;</span><span class="p">,</span> <span class="s">&#39;sk&#39;</span><span class="p">,</span> <span class="s">&#39;subtype&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;state&#39;</span><span class="p">,</span> <span class="s">&#39;last_update_date&#39;</span><span class="p">,</span> <span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-27'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-27'>#</a>
+      </div>
+      <h1>OfficeObject</h1>
+<p>This class represents details about the political office an elected
+official holds.</p>
+<p><a href="https://cicero.azavea.com/docs/office.html">Cicero documentation</a></p>
+<h2>Available Attributes (all types can also be None/empty strings):</h2>
+<ul>
+<li>.valid_from (string) - datetime this office is valid from</li>
+<li>.district (DistrictObject) - DistrictObject this office represents</li>
+<li>.representing_country (CountryObject) - CountryObject this office is a part of</li>
+<li>.representing_state (string) - state this district represents</li>
+<li>.notes (string) - general notes</li>
+<li>.title (string) - title of officials that represent this district</li>
+<li>.valid_to (string) - datetime this district is valid until</li>
+<li>.sk (integer) - Cicero surrogate key for historical queries</li>
+<li>.chamber (ChamberObject) - ChamberObject this district is a part of</li>
+<li>.last_update_date (string) - datetime this district was last updated</li>
+<li>.election_rules (string) - election rules for this district</li>
+<li>.id (integer) - Cicero unique ID for this district</li>
+<li>.representing_city (string) - city this district represents, if any</li>
+</ul>
+<h3>Geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>candidates[list]<ul>
+<li>officials[list]<ul>
+<li>office</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Non-geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>officials[list]<ul>
+<li>office</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">OfficeObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-28'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-28'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-29'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-29'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">office_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">office_dict</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;valid_from&#39;</span><span class="p">,</span> <span class="s">&#39;representing_state&#39;</span><span class="p">,</span> <span class="s">&#39;notes&#39;</span><span class="p">,</span> <span class="s">&#39;title&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;valid_to&#39;</span><span class="p">,</span> <span class="s">&#39;sk&#39;</span><span class="p">,</span> <span class="s">&#39;last_update_date&#39;</span><span class="p">,</span> <span class="s">&#39;election_rules&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;representing_city&#39;</span><span class="p">))</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">district</span> <span class="o">=</span> <span class="n">DistrictObject</span><span class="p">(</span><span class="n">office_dict</span><span class="p">[</span><span class="s">&#39;district&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">representing_country</span> <span class="o">=</span> <span class="n">CountryObject</span><span class="p">(</span><span class="n">office_dict</span><span class="p">[</span><span class="s">&#39;representing_country&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chamber</span> <span class="o">=</span> <span class="n">ChamberObject</span><span class="p">(</span><span class="n">office_dict</span><span class="p">[</span><span class="s">&#39;chamber&#39;</span><span class="p">])</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-30'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-30'>#</a>
+      </div>
+      <h1>AddressObject</h1>
+<p>This class represents details about physical addresses an official may have,
+such as their district office, capitol office, phone and fax numbers, etc.</p>
+<p><a href="https://cicero.azavea.com/docs/official.html#Official.addresses">Cicero documentation</a></p>
+<h2>Available Attributes (all types can also be None/empty strings):</h2>
+<ul>
+<li>.county (string) - if applicable, county of address. <em>Not</em> to be confused
+    with a country!</li>
+<li>.postal_code (string)</li>
+<li>.phone_1 (string)</li>
+<li>.phone_2 (string)</li>
+<li>.fax_1 (string)</li>
+<li>.fax_2 (string)</li>
+<li>.city (string)</li>
+<li>.state (string)</li>
+<li>.address_1 (string) - Address line 1</li>
+<li>.address_2 (string) - Address line 2</li>
+<li>.address_3 (string) - Address line 3</li>
+</ul>
+<h2>Available Method:</h2>
+<ul>
+<li>.get_formatted_mailing_address(county=False):
+        will return a string composed from non-empty string components of this
+        address object, formatted to be used for an envelope label. For example,
+        +    address_1
+        +    address_2
+        +    address_3
+        +    city, state, postal_code
+        County is false by default, but if set to true, this method will
+        add it (if not empty) to the formatted mailing address string
+        that is returned.</li>
+</ul>
+<h3>Geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>candidates[list]<ul>
+<li>officials[list]<ul>
+<li>addresses[list of AddressObjects]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Non-geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>officials[list]<ul>
+<li>addresses[list of AddressObjects]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">AddressObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-31'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-31'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-32'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-32'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">address_dict</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;county&#39;</span><span class="p">,</span> <span class="s">&#39;postal_code&#39;</span><span class="p">,</span> <span class="s">&#39;phone_1&#39;</span><span class="p">,</span> <span class="s">&#39;phone_2&#39;</span><span class="p">,</span> <span class="s">&#39;fax_1&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;fax_2&#39;</span><span class="p">,</span> <span class="s">&#39;city&#39;</span><span class="p">,</span> <span class="s">&#39;state&#39;</span><span class="p">,</span> <span class="s">&#39;address_1&#39;</span><span class="p">,</span> <span class="s">&#39;address_2&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;address_3&#39;</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-33'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-33'>#</a>
+      </div>
+      <p>convenience function to print out what could be used as
+an envelope address label</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">get_formatted_mailing_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">county</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">mailing_address</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        
+        <span class="n">add_part</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">template</span><span class="p">,</span> <span class="n">string</span><span class="p">:</span> <span class="n">template</span> <span class="o">%</span> <span class="n">string</span> <span class="k">if</span> <span class="n">string</span> <span class="k">else</span> <span class="s">&quot;&quot;</span>
+        
+        <span class="n">mailing_address</span> <span class="o">+=</span> <span class="n">add_part</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">address_1</span><span class="p">)</span>
+        <span class="n">mailing_address</span> <span class="o">+=</span> <span class="n">add_part</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">address_2</span><span class="p">)</span>
+        <span class="n">mailing_address</span> <span class="o">+=</span> <span class="n">add_part</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">address_3</span><span class="p">)</span>
+        <span class="n">mailing_address</span> <span class="o">+=</span> <span class="n">add_part</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">, &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">city</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-34'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-34'>#</a>
+      </div>
+      <p>if user has set county=True and wants the county in the address</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">if</span> <span class="n">county</span><span class="p">:</span>
+            <span class="n">mailing_address</span> <span class="o">+=</span> <span class="n">add_part</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">, &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">county</span><span class="p">)</span>
+        
+        <span class="n">mailing_address</span> <span class="o">+=</span> <span class="n">add_part</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">mailing_address</span> <span class="o">+=</span> <span class="n">add_part</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">postal_code</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">mailing_address</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-35'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-35'>#</a>
+      </div>
+      <h1>OfficialObject</h1>
+<p>This class is the main class for details about a particular elected official.</p>
+<p><a href="https://cicero.azavea.com/docs/official.html">Cicero documentation</a></p>
+<h2>Available Attributes (all types can also be None/empty strings):</h2>
+<ul>
+<li>.last_name (string) - official's last name</li>
+<li>.addresses (list of AddressObjects)</li>
+<li>.office (OfficeObject)</li>
+<li>.initial_term_start_date (string) - datetime of when this official first
+        entered office</li>
+<li>.current_term_start_date (string) - datetime of when this official's
+        current term started</li>
+<li>.web_form_url (string) - many officials have web contact forms instead
+        of or in addition to email addresses</li>
+<li>.last_update_date (string) - datetime when this official was last updated</li>
+<li>.salutation (string) - formal salutation in front of this official's name</li>
+<li>.id (integer) - Cicero unique ID</li>
+<li>.photo_origin_url (string) - image link to photo of this official</li>
+<li>.middle_initial (string) - official's middle initial</li>
+<li>.first_name (string) - official's first name</li>
+<li>.valid_from (string) - datetime when this official was first valid</li>
+<li>.committees (list of CommitteeObjects) - CommitteeObjects this official
+        is associated with</li>
+<li>.notes (list of strings) - general notes</li>
+<li>.identifiers (list of IdentifierObjects) - external identifiers belonging
+        to this official</li>
+<li>.name_suffix (string) - formal suffix after official's name</li>
+<li>.valid_to (string) - datetime this official is valid until</li>
+<li>.sk (integer) - Cicero surrogate key for historical queries</li>
+<li>.term_end_date (string) - datetime for when this official's term ends</li>
+<li>.urls (list of strings) - web urls for this elected official</li>
+<li>.party (string) - political party this official is affiliated with</li>
+<li>.email_addresses (list of strings) - email addresses for this official</li>
+</ul>
+<h2>Available Method:</h2>
+<ul>
+<li>.find_identifier(identifier_type=""):
+        returns a generated list of IdentifierObjects for this official
+        matching a particular <a href="http://cicero.azavea.com/docs/identifier.html#cicero.webservice.models.Identifier.identifier_type">identifier_type</a>.</li>
+</ul>
+<h3>Geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>candidates[list]<ul>
+<li>officials[list of OfficialObjects]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Non-geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>officials[list of OfficialObjects]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">OfficialObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-36'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-36'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-37'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-37'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">official_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">official_dict</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;last_name&#39;</span><span class="p">,</span> <span class="s">&#39;initial_term_start_date&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;current_term_start_date&#39;</span><span class="p">,</span> <span class="s">&#39;web_form_url&#39;</span><span class="p">,</span> <span class="s">&#39;last_update_date&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;salutation&#39;</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;photo_origin_url&#39;</span><span class="p">,</span> <span class="s">&#39;middle_initial&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;first_name&#39;</span><span class="p">,</span> <span class="s">&#39;valid_from&#39;</span><span class="p">,</span> <span class="s">&#39;notes&#39;</span><span class="p">,</span> <span class="s">&#39;name_suffix&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;valid_to&#39;</span><span class="p">,</span> <span class="s">&#39;sk&#39;</span><span class="p">,</span> <span class="s">&#39;term_end_date&#39;</span><span class="p">,</span> <span class="s">&#39;urls&#39;</span><span class="p">,</span> <span class="s">&#39;party&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;email_addresses&#39;</span><span class="p">))</span>
+                    
+        <span class="bp">self</span><span class="o">.</span><span class="n">addresses</span> <span class="o">=</span> <span class="p">[</span><span class="n">AddressObject</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">official_dict</span><span class="p">[</span><span class="s">&#39;addresses&#39;</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">office</span> <span class="o">=</span> <span class="n">OfficeObject</span><span class="p">(</span><span class="n">official_dict</span><span class="p">[</span><span class="s">&#39;office&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">committees</span> <span class="o">=</span> <span class="p">[</span><span class="n">CommitteeObject</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">official_dict</span><span class="p">[</span><span class="s">&#39;committees&#39;</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">identifiers</span> <span class="o">=</span> <span class="p">[</span><span class="n">IdentifierObject</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">official_dict</span><span class="p">[</span><span class="s">&#39;identifiers&#39;</span><span class="p">]]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-38'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-38'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">find_identifier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier_type</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-39'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-39'>#</a>
+      </div>
+      <p>iterate through self.identifiers and search on type
+If one or more of same type, return all those IdentifierObjects in a list</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">return</span> <span class="p">[</span><span class="n">identifier</span> <span class="k">for</span> <span class="n">identifier</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">identifiers</span>
+                <span class="k">if</span> <span class="n">identifier</span><span class="o">.</span><span class="n">identifier_type</span> <span class="o">==</span> <span class="n">identifier_type</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-40'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-40'>#</a>
+      </div>
+      <h1>CountObject</h1>
+<p>The CountObject class contains pagination details for responses. The Cicero
+database is a large one, with many more officials, districts, and election
+events than is practical to return in one ReST response. So, features are
+included to page and iterate through many results. The CountObject signposts
+this and lets you know where in the results this particular response is.</p>
+<p><a href="https://cicero.azavea.com/docs/sorting_paging.html">Cicero documentation</a></p>
+<h2>Available Attributes (all are always either positive or negative integers):</h2>
+<ul>
+<li>.to - highest result returned in this response</li>
+<li>.from_ - lowest result returned in this response
+        (note the trailing underscore - "from" is a reserved word in python)</li>
+<li>.total - total number of results returned in this response</li>
+</ul>
+<h3>Geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>candidates[list]<ul>
+<li>count</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Non-geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>count</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">CountObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-41'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-41'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-42'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-42'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">count_dict</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;to&#39;</span><span class="p">,</span><span class="s">&#39;total&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">from_</span> <span class="o">=</span> <span class="n">count_dict</span><span class="p">[</span><span class="s">&#39;from&#39;</span><span class="p">]</span> <span class="c">#get around &quot;from&quot; being reserve word</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-43'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-43'>#</a>
+      </div>
+      <h1>GeocodingCandidate</h1>
+<p>The GeocodingCandidate class is what the DistrictGeocodingCandidate and
+OfficialGeocodingCandidate classes inherit from, and defines base fields
+for describing a geocoded address candidate. It is erroneous for the
+default GeocodingCandidate class to appear "in the wild," instead of its
+inheriting classes DistrictGeocodingCandidate and OfficialGeocodingCandidate.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">GeocodingCandidate</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-44'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-44'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-45'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-45'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geocoding_candidate_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">geocoding_candidate_dict</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;match_addr&#39;</span><span class="p">,</span> <span class="s">&#39;wkid&#39;</span><span class="p">,</span> <span class="s">&#39;locator&#39;</span><span class="p">,</span> <span class="s">&#39;score&#39;</span><span class="p">,</span> <span class="s">&#39;locator_type&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="s">&#39;geoservice&#39;</span><span class="p">))</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">CountObject</span><span class="p">(</span><span class="n">geocoding_candidate_dict</span><span class="p">[</span><span class="s">&#39;count&#39;</span><span class="p">])</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-46'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-46'>#</a>
+      </div>
+      <h1>DistrictGeocodingCandidate</h1>
+<p>The DistrictGeocodingCandidate class defines base fields
+for describing a geocoded address candidate, and a .districts attribute
+containing the main list of DistrictObjects and district information.
+DistrictGeocodingCandidates are only returned in
+/legislative_district and /nonlegislative_district calls using geocoding.</p>
+<p>Cicero documentation:
++    <a href="https://cicero.azavea.com/docs/query_by_location.html">on geocoding</a>
++    <a href="https://cicero.azavea.com/docs/district.html">on the /district call</a></p>
+<h2>Available Attributes (inherited from GeocodingCandidate):</h2>
+<ul>
+<li>.count (CountObject) - pagination details on numbers of districts returned</li>
+<li>.match_addr (string) - candidate address that the geocoder was able to match</li>
+<li>.wkid (integer) - for Well Known ID, the EPSG code (spatial reference system)
+        for the geocoded coordinates returned for this candidate</li>
+<li>.locator (string) - type of geocoding method used</li>
+<li>.score (float) - confidence score out of 100 that this candidate is what
+        the user was trying to match to</li>
+<li>.locator_type (string) - type of geocoder used</li>
+<li>.y (float) - y coordinate (latitude)</li>
+<li>.x (float) - x coordinate (longitude)</li>
+<li>.geoservice (string) - Geocoding service provider used</li>
+</ul>
+<h2>Available Attributes (specific to DistrictGeocodingCandidate):</h2>
+<ul>
+<li>.districts (list of DistrictObjects) - DistrictObjects for this candidate</li>
+</ul>
+<h3>Geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>candidates[list of DistrictGeocodingCandidates]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">DistrictGeocodingCandidate</span><span class="p">(</span><span class="n">GeocodingCandidate</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-47'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-47'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-48'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-48'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">district_geocoding_candidate_dict</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DistrictGeocodingCandidate</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+                                            <span class="n">district_geocoding_candidate_dict</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">districts</span> <span class="o">=</span> <span class="p">[</span><span class="n">DistrictObject</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span>
+                            <span class="n">district_geocoding_candidate_dict</span><span class="p">[</span><span class="s">&#39;districts&#39;</span><span class="p">]]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-49'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-49'>#</a>
+      </div>
+      <h1>OfficialGeocodingCandidate</h1>
+<p>The OfficialGeocodingCandidate class defines base fields
+for describing a geocoded address candidate, and a .officials attribute
+containing the main list of OfficialObjects and official information.
+OfficialGeocodingCandidates are only returned in
+/official calls using geocoding.</p>
+<p>Cicero documentation:
++   <a href="https://cicero.azavea.com/docs/query_by_location.html">for geocoding</a>
++   <a href="https://cicero.azavea.com/docs/official.html">for /official call</a></p>
+<h2>Available Attributes (inherited from GeocodingCandidate):</h2>
+<ul>
+<li>.count (CountObject) - pagination details on numbers of officials returned</li>
+<li>.match_addr (string) - candidate address that the geocoder was able to match</li>
+<li>.wkid (integer) - for Well Known ID, the EPSG code (spatial reference system)
+        for the geocoded coordinates returned for this candidate</li>
+<li>.locator (string) - type of geocoding method used</li>
+<li>.score (float) - confidence score out of 100 that this candidate is what
+        the user was trying to match to</li>
+<li>.locator_type (string) - type of geocoder used</li>
+<li>.y (float) - y coordinate (latitude)</li>
+<li>.x (float) - x coordinate (longitude)</li>
+<li>.geoservice (string) - Geocoding service provider used</li>
+</ul>
+<h2>Available Attributes (specific to DistrictGeocodingCandidate):</h2>
+<ul>
+<li>.officials (list of OfficialObjects) - OfficialObjects for this candidate</li>
+</ul>
+<h2>Available Method:</h2>
+<ul>
+<li>.who_are_the_officials():
+        generates and returns a list of officials in this response and their
+        last_name, name_formal of their chamber, district_type of their district,
+        district_id, and party. This "quick view" list has the same ordering
+        as the larger .officials list of OfficialObjects, so is useful and
+        less verbose for figuring out who's where in the response.</li>
+</ul>
+<h3>Geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>candidates[list of OfficialGeocodingCandidates]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">OfficialGeocodingCandidate</span><span class="p">(</span><span class="n">GeocodingCandidate</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-50'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-50'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-51'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-51'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">official_geocoding_candidate_dict</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">OfficialGeocodingCandidate</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+                                            <span class="n">official_geocoding_candidate_dict</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">officials</span> <span class="o">=</span> <span class="p">[</span><span class="n">OfficialObject</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span>
+                            <span class="n">official_geocoding_candidate_dict</span><span class="p">[</span><span class="s">&#39;officials&#39;</span><span class="p">]]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-52'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-52'>#</a>
+      </div>
+      <p>convenience "simplified view" function</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">who_are_the_officials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">officials_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">official</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">officials</span><span class="p">:</span>
+
+            <span class="n">officials_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">official</span><span class="o">.</span><span class="n">last_name</span><span class="p">,</span>
+                                    <span class="n">official</span><span class="o">.</span><span class="n">office</span><span class="o">.</span><span class="n">chamber</span><span class="o">.</span><span class="n">name_formal</span><span class="p">,</span>
+                                    <span class="n">official</span><span class="o">.</span><span class="n">office</span><span class="o">.</span><span class="n">district</span><span class="o">.</span><span class="n">district_type</span><span class="p">,</span>
+                                    <span class="n">official</span><span class="o">.</span><span class="n">office</span><span class="o">.</span><span class="n">district</span><span class="o">.</span><span class="n">district_id</span><span class="p">,</span>
+                                    <span class="n">official</span><span class="o">.</span><span class="n">party</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">officials_list</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-53'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-53'>#</a>
+      </div>
+      <h1>ElectionEventGeocodingCandidate</h1>
+<p>The ElectionEventGeocodingCandidate class defines base fields
+for describing a geocoded address candidate, and an .election_events attribute
+containing the main list of ElectionEventObjects.
+ElectionEventGeocodingCandidates are only returned in
+/election_event calls using geocoding.</p>
+<h1>IMPORTANT NOTE - Alpha features be knocking at your door!</h1>
+<p>Geocoding with election events is best described as an "alpha" feature
+of the Cicero API, currently (as of Oct 8 2013). Consider this in the context
+of election events and the /election_event endpoint as a whole being
+a "beta" feature - you have been warned!</p>
+<p>However, unlike non-geocoding /election_event calls, which are "free" (ie,
+don't use up any API credits) due to their "beta" status, <em>calls to the
+/election_event endpoint which do take advantage of <a href="http://cicero.azavea.com/docs/query_by_location.html">location or geocoding
+parameters</a> will be
+charged API credits accordingly.</em> Geocoding an address or location through
+one of the Cicero API's geocoding providers is a direct cost for us, so while
+we are happy to provide free election events without geocoding as we improve
+the feature, we must charge credits for all calls to all endpoints that use
+geocoding.</p>
+<p>When using geocoding, elections for the chambers of the address's
+country will appear, as well as elections for that state, city, etc.
+For example, searching for election_events while geocoding an address in
+the US State of Alaska, will also return all election_events
+in all other US States (like Idaho and Ohio, as examples) for US House and
+Senate, because Alaska is a part of those chambers, even though Alaska does
+not vote for other state's representatives and senators. On the other hand,
+election events in non-US countries like France, Great Britain, or Canada
+would not be returned with geocoding. Likewise, gubernatorial elections
+for other states than Alaska would not be returned, and if the geocoded address
+was in Fairbanks, then Anchorage municipal elections would not be returned.</p>
+<h1>KNOWN ISSUES/BUGS:</h1>
+<p>Note these issues apply only to geocoding with election_events, not
+necessarily non-geocoded /election_event calls.</p>
+<ul>
+<li><em>Unpredictable repetition:</em> in the list of election_event objects returned
+        in API responses using geocoding, all or some objects will be duplicates
+        of other objects (in other words, election_event objects are repeated).
+        For example, in a response with a list of 5 election_events, objects
+        0 and 1 in the list might describe the same exact special election
+        for US Senator Billy Penn's vacated seat, and objects 2, 3, and 4 might
+        describe the same exact municipal election for Mayor of the City of APIs.
+        We cannot guarantee that duplicated election_event objects will be
+        sequential in the list returned in the response, nor can we be sure
+        of how many times they repeat themselves.<ul>
+<li><em>Suggested Workaround:</em> Build logic into your application that checks
+        the "id" attribute (integer) of each election_event object. This
+        will be identical for duplicate election_events.</li>
+</ul>
+</li>
+<li><em>Broken in API version 3.0:</em> Geocoding with election_events is only
+        supported in version 3.1. You may run into other issues with
+        election_events in general when using version 3.0 - v3.1 is highly
+        recommended in all cases.</li>
+</ul>
+<p>Cicero documentation:
+    <a href="https://cicero.azavea.com/docs/query_by_location.html">for geocoding</a>
+    <a href="https://cicero.azavea.com/docs/election_event.html">for election events</a></p>
+<h2>Available Attributes (inherited from GeocodingCandidate):</h2>
+<ul>
+<li>.count (CountObject) - pagination details on numbers of officials returned</li>
+<li>.match_addr (string) - candidate address that the geocoder was able to match</li>
+<li>.wkid (integer) - for Well Known ID, the EPSG code (spatial reference system)
+        for the geocoded coordinates returned for this candidate</li>
+<li>.locator (string) - type of geocoding method used</li>
+<li>.score (float) - confidence score out of 100 that this candidate is what
+        the user was trying to match to</li>
+<li>.locator_type (string) - type of geocoder used</li>
+<li>.y (float) - y coordinate (latitude)</li>
+<li>.x (float) - x coordinate (longitude)</li>
+<li>.geoservice (string) - Geocoding service provider used</li>
+</ul>
+<h2>Available Attribute (specific to ElectionEventGeocodingCandidate):</h2>
+<ul>
+<li>.election_events (list of ElectionEventObjects)</li>
+</ul>
+<h3>Geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>candidates[list of ElectionEventGeocodingCandidates]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ElectionEventGeocodingCandidate</span><span class="p">(</span><span class="n">GeocodingCandidate</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-54'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-54'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-55'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-55'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">election_event_geocoding_candidate_dict</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ElectionEventGeocodingCandidate</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+                                        <span class="n">election_event_geocoding_candidate_dict</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">election_events</span> <span class="o">=</span> <span class="p">[</span><span class="n">ElectionEventObject</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>
+            <span class="n">election_event_geocoding_candidate_dict</span><span class="p">[</span><span class="s">&#39;election_events&#39;</span><span class="p">]]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-56'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-56'>#</a>
+      </div>
+      <h1>ElectionEventNonGeocodingResultsObject</h1>
+<p>The ElectionEventNonGeocodingResultsObject class is a container for a list
+of returned ElectionEventObjects and a CountObject enumerating how many and
+which have been returned in this response.
+ElectionEventNonGeocodingResultsObjects are only returned in
+/election_event calls that do NOT use geocoding. </p>
+<p>Please review the issues outlined in the docstring of the
+ElectionEventGeocodingCandidate class. Non-geocoding /election_event calls
+are somewhat more robust than geocoding calls, but are still a "beta"
+feature. Unlike /election_event call that do use geocoding, however,
+non-geocoding calls will not charge an API credit for the time being.
+(as of Oct 9 2013)</p>
+<p><a href="https://cicero.azavea.com/docs/election_event.html">Cicero documentation</a></p>
+<h2>Available Attributes:</h2>
+<ul>
+<li>.count (CountObject)</li>
+<li>.election_events (list of ElectionEventObjects)</li>
+</ul>
+<h3>Non-geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results (an ElectionEventNonGeocodingResultsObject)</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ElectionEventNonGeocodingResultsObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-57'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-57'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-58'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-58'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">election_event_nongeocoding_results_dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s">&#39;count&#39;</span> <span class="ow">in</span> <span class="n">election_event_nongeocoding_results_dict</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">CountObject</span><span class="p">(</span>
+                            <span class="n">election_event_nongeocoding_results_dict</span><span class="p">[</span><span class="s">&#39;count&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">election_events</span> <span class="o">=</span> <span class="p">[</span><span class="n">ElectionEventObject</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>
+                    <span class="n">election_event_nongeocoding_results_dict</span><span class="p">[</span><span class="s">&#39;election_events&#39;</span><span class="p">]]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-59'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-59'>#</a>
+      </div>
+      <h1>DistrictNonGeocodingResultsObject</h1>
+<p>The s class is a container for a list of
+returned DistrictObjects and a CountObject enumerating how many and which
+have been returned in this response.
+DistrictNonGeocodingResultsObject objects are only returned in
+/legislative_district or /nonlegislative_district calls that do NOT use
+geocoding.</p>
+<p><a href="https://cicero.azavea.com/docs/election_event.html">Cicero documentation</a></p>
+<h2>Available Attributes:</h2>
+<ul>
+<li>.count (CountObject)</li>
+<li>.districts (list of DistrictObjects)</li>
+</ul>
+<h3>Non-geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results (a DistrictNonGeocodingResultsObject)</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">DistrictNonGeocodingResultsObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-60'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-60'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-61'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-61'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">district_nongeocoding_results_dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s">&#39;count&#39;</span> <span class="ow">in</span> <span class="n">district_nongeocoding_results_dict</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">CountObject</span><span class="p">(</span><span class="n">district_nongeocoding_results_dict</span><span class="p">[</span><span class="s">&#39;count&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">districts</span> <span class="o">=</span> <span class="p">[</span><span class="n">DistrictObject</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span>
+                        <span class="n">district_nongeocoding_results_dict</span><span class="p">[</span><span class="s">&#39;districts&#39;</span><span class="p">]]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-62'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-62'>#</a>
+      </div>
+      <h1>OfficialNonGeocodingResultsObject</h1>
+<p>The OfficialNonGeocodingResultsObject class is a container for a list of
+returned OfficialObjects and a CountObject enumerating how many and which
+have been returned in this response.
+OfficialNonGeocodingResultsObject objects are only returned in
+/official calls that do NOT use geocoding.</p>
+<p><a href="https://cicero.azavea.com/docs/election_event.html">Cicero documentation</a></p>
+<h2>Available Attributes:</h2>
+<ul>
+<li>.count (CountObject)</li>
+<li>.officials (list of OfficialObjects)</li>
+</ul>
+<h2>Available Method:</h2>
+<ul>
+<li>.who_are_the_officials():
+    generates and returns a list of officials in this response and their
+    last_name, name_formal of their chamber, district_type of their district,
+    and party. This "quick view" list has the same ordering as the larger
+    .officials list of OfficialObjects, so is useful and less verbose for
+    figuring out who is where in the response.</li>
+</ul>
+<h3>Non-geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results (an OfficialNonGeocodingResultsObject)</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">OfficialNonGeocodingResultsObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-63'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-63'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-64'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-64'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">official_nongeocoding_results_dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s">&#39;count&#39;</span> <span class="ow">in</span> <span class="n">official_nongeocoding_results_dict</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">CountObject</span><span class="p">(</span><span class="n">official_nongeocoding_results_dict</span><span class="p">[</span><span class="s">&#39;count&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">officials</span> <span class="o">=</span> <span class="p">[</span><span class="n">OfficialObject</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span>
+                            <span class="n">official_nongeocoding_results_dict</span><span class="p">[</span><span class="s">&#39;officials&#39;</span><span class="p">]]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-65'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-65'>#</a>
+      </div>
+      <p>convenience "simplified view" function</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">who_are_the_officials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">officials_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">official</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">officials</span><span class="p">:</span>
+
+            <span class="n">officials_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">official</span><span class="o">.</span><span class="n">last_name</span><span class="p">,</span>
+                                      <span class="n">official</span><span class="o">.</span><span class="n">office</span><span class="o">.</span><span class="n">chamber</span><span class="o">.</span><span class="n">name_formal</span><span class="p">,</span>
+                                      <span class="n">official</span><span class="o">.</span><span class="n">office</span><span class="o">.</span><span class="n">district</span><span class="o">.</span><span class="n">district_type</span><span class="p">,</span>
+                                      <span class="n">official</span><span class="o">.</span><span class="n">party</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">officials_list</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-66'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-66'>#</a>
+      </div>
+      <h1>GeocodingResultsObject</h1>
+<p>The GeocodingResultsObject class defines a "geocoding candidates" list of
+either OfficialGeocodingCandidate, DistrictGeocodingCandidate, or
+ElectionEventGeocodingCandidate objects, depending on the type of response.</p>
+<h2>Available Attributes:</h2>
+<ul>
+<li>.candidates (list) - list of appropriate candidate objects</li>
+</ul>
+<h3>Geocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>candidates</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">GeocodingResultsObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-67'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-67'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-68'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-68'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geocoding_results_dict</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">candidates</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">geocoding_results_dict</span><span class="p">[</span><span class="s">&#39;candidates&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="s">&#39;officials&#39;</span> <span class="ow">in</span> <span class="n">candidate</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">OfficialGeocodingCandidate</span><span class="p">(</span><span class="n">candidate</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="s">&#39;districts&#39;</span> <span class="ow">in</span> <span class="n">candidate</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DistrictGeocodingCandidate</span><span class="p">(</span><span class="n">candidate</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="s">&#39;election_events&#39;</span> <span class="ow">in</span> <span class="n">candidate</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ElectionEventGeocodingCandidate</span><span class="p">(</span><span class="n">candidate</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-69'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-69'>#</a>
+      </div>
+      <p>we shouldn't normally get to this case
+but if needed, this is the base candidate</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>                <span class="bp">self</span><span class="o">.</span><span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GeocodingCandidate</span><span class="p">(</span><span class="n">candidate</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-70'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-70'>#</a>
+      </div>
+      <h1>ExtentObject</h1>
+<p>Always nested within a MapObject, the ExtentObject class represents
+the details necessary to construct the geographic bounding box containing
+the returned map. By default these coordinates are in the Web Mercator
+coordinate system (EPSG:900913).</p>
+<p><a href="https://cicero.azavea.com/docs/map.html">Cicero documentation</a></p>
+<h2>Available Attributes:</h2>
+<ul>
+<li>.x_min (float) - minimum x coordinate (longitude)</li>
+<li>.y_min (float) - minimum y coordinate (latitude)</li>
+<li>.x_max (float) - maximum x coordinate (longitude)</li>
+<li>.y_max (float) - maximum y coordinate (latitude)</li>
+<li>.srid (integer) - Spatial Reference IDentifier of coordinates (ie, EPSG code)</li>
+</ul>
+<h3>Nongeocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>maps[list]<ul>
+<li>extent</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ExtentObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-71'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-71'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-72'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-72'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extent_dict</span><span class="p">):</span> <span class="c">#TODO unify &quot;_dict&quot; and &quot;_object&quot; parameter names - decide on one</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">extent_dict</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;x_min&#39;</span><span class="p">,</span> <span class="s">&#39;y_min&#39;</span><span class="p">,</span> <span class="s">&#39;x_max&#39;</span><span class="p">,</span> <span class="s">&#39;y_max&#39;</span><span class="p">,</span> <span class="s">&#39;srid&#39;</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-73'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-73'>#</a>
+      </div>
+      <h1>MapObject</h1>
+<p>The MapObject class contains attributes to construct or access a returned
+map from the /map call.</p>
+<p><a href="https://cicero.azavea.com/docs/map.html">Cicero documentation</a></p>
+<h2>Available Attributes:</h2>
+<ul>
+<li>.url (string) - url to Azavea-hosted map image, deleted after a few days</li>
+<li>.img_src (string) - when requested through a URL parameter, contains long
+        base64 image data string of the map returned</li>
+<li>.extent (ExtentObject) - an ExtentObject with bounding box details</li>
+</ul>
+<h3>Nongeocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>maps[list of MapObjects]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">MapObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-74'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-74'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-75'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-75'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">map_dict</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">map_dict</span><span class="p">[</span><span class="s">&#39;url&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="s">&#39;img_src&#39;</span> <span class="ow">in</span> <span class="n">map_dict</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">img_src</span> <span class="o">=</span> <span class="n">map_dict</span><span class="p">[</span><span class="s">&#39;img_src&#39;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">extent</span> <span class="o">=</span> <span class="n">ExtentObject</span><span class="p">(</span><span class="n">map_dict</span><span class="p">[</span><span class="s">&#39;extent&#39;</span><span class="p">])</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-76'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-76'>#</a>
+      </div>
+      <h1>MapResultsObject</h1>
+<p>The MapResultsObject class is a container for a list of MapObjects.</p>
+<p>(Cicero documentation)[https://cicero.azavea.com/docs/map.html]</p>
+<h2>Available Attributes:</h2>
+<ul>
+<li>.maps (list of MapObjects)</li>
+</ul>
+<h3>Nongeocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>maps</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">MapsResultsObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-77'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-77'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-78'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-78'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">map_result_dict</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maps</span> <span class="o">=</span> <span class="p">[</span><span class="n">MapObject</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span>
+                        <span class="n">map_result_dict</span><span class="p">[</span><span class="s">&#39;maps&#39;</span><span class="p">]]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-79'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-79'>#</a>
+      </div>
+      <h1>DistrictTypeObject</h1>
+<p>The DistrictTypeObject is returned from the /district_type call,
+and contains information about each district_type available in Cicero.</p>
+<p>(Cicero documentation)[https://cicero.azavea.com/docs/district_type.html]</p>
+<h2>Available Attributes:</h2>
+<ul>
+<li>.name_short (string) - name_short of this district type, ie CENSUS,
+        NATIONAL_LOWER, etc</li>
+<li>.notes (string)</li>
+<li>.acknowledgements (string)</li>
+<li>.is_legislative (boolean) - is this a legislative or nonlegislative district type?</li>
+<li>.name_long (string) - long name of this district type</li>
+</ul>
+<h3>Nongeocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>district_types[list of DistrictTypeObjects]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">DistrictTypeObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-80'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-80'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-81'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-81'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">district_type_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">district_type_dict</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;name_short&#39;</span><span class="p">,</span> <span class="s">&#39;notes&#39;</span><span class="p">,</span> <span class="s">&#39;acknowledgements&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;is_legislative&#39;</span><span class="p">,</span> <span class="s">&#39;name_long&#39;</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-82'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-82'>#</a>
+      </div>
+      <h1>DistrictTypeResultsObject</h1>
+<p>The DistrictTypeResultsObject is a container for a list of
+DistrictTypeObjects.</p>
+<p><a href="https://cicero.azavea.com/docs/district_type.html">Cicero documentation</a></p>
+<h2>Available Attributes:</h2>
+<ul>
+<li>.district_types (list of DistrictTypeObjects)</li>
+</ul>
+<h3>Nongeocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>district_types</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">DistrictTypeResultsObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-83'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-83'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-84'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-84'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">district_type_result_dict</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">district_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">DistrictTypeObject</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span> <span class="k">for</span> <span class="n">dt</span> <span class="ow">in</span>
+                            <span class="n">district_type_result_dict</span><span class="p">[</span><span class="s">&#39;district_types&#39;</span><span class="p">]]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-85'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-85'>#</a>
+      </div>
+      <h1>CreditBatchObject</h1>
+<p>The CreditBatchObject is returned from the /account/credits_remaining call,
+and contains information about each batch of credits a user has.</p>
+<p><a href="https://cicero.azavea.com/docs/credits_remaining.html">Cicero documentation</a></p>
+<h2>Available Attributes:</h2>
+<ul>
+<li>.discount (string) - discount given for this credit batch</li>
+<li>.cost (string) - cost of this credit batch</li>
+<li>.created (string) - datetime this credit batch was created</li>
+<li>.credits_remaining (integer) - number of credits remaining in this batch</li>
+<li>.expiration_time (string) - date this batch of credits will expire</li>
+<li>.credits_purchased (integer) - how many credits in this batch were
+        purchased (versus given as a free trial, etc)</li>
+</ul>
+<h3>Nongeocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results<ul>
+<li>usable_batches[list of CreditBatchObjects]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">CreditBatchObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-86'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-86'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-87'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-87'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credit_batch_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">credit_batch_dict</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;discount&#39;</span><span class="p">,</span> <span class="s">&#39;expiration_time&#39;</span><span class="p">,</span> <span class="s">&#39;cost&#39;</span><span class="p">,</span> <span class="s">&#39;credits_remaining&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;credits_purchased&#39;</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-88'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-88'>#</a>
+      </div>
+      <h1>AccountCreditsRemainingResultsObject</h1>
+<p>The AccountCreditsRemainingResultsObject is returned from the
+/account/credits_remaining call, and contains information about a user's
+balance and overdraft limit, as well as a list of available credit batches.</p>
+<p>(Cicero documentation)[https://cicero.azavea.com/docs/credits_remaining.html]</p>
+<h2>Available Attributes:</h2>
+<ul>
+<li>.credit_balance (integer) - how many API credits does this user have to
+        spend?</li>
+<li>.usable_batches (list of CreditBatchObjects)</li>
+<li>.overdraft_limit - how many credits may this user "overdraft" beyond
+        the credit_balance, before API usage is halted and more credits
+        must be purchased?</li>
+</ul>
+<h3>Nongeocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">AccountCreditsRemainingResultsObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-89'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-89'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-90'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-90'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credits_remaining_result_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">credits_remaining_result_dict</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;credit_balance&#39;</span><span class="p">,</span> <span class="s">&#39;overdraft_limit&#39;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">usable_batches</span> <span class="o">=</span> <span class="p">[</span><span class="n">CreditBatchObject</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span> <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span>
+                        <span class="n">credits_remaining_result_dict</span><span class="p">[</span><span class="s">&#39;usable_batches&#39;</span><span class="p">]]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-91'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-91'>#</a>
+      </div>
+      <h1>ActivityTypeObject</h1>
+<p>The ActivityTypeObject is returned from the /account/usage call,
+and contains information about how a user has been using their API credits.</p>
+<p><a href="https://cicero.azavea.com/docs/usage.html">Cicero documentation</a></p>
+<h2>Available Attributes:</h2>
+<ul>
+<li>.count (string) - how many times has this API endpoint been called?</li>
+<li>.type (string) - which API endpoint, or "activity", is this?</li>
+<li>.credits_used (string) - how many credits have been spent on this activity?</li>
+</ul>
+<h3>Nongeocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results[list]<ul>
+<li>activity_types[list of ActivityTypeObjects]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ActivityTypeObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-92'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-92'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-93'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-93'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">activity_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">activity_dict</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;count&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;credits_used&#39;</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-94'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-94'>#</a>
+      </div>
+      <h1>AccountUsageObject</h1>
+<p>The AccountUsageObject is returned from the /account/usage call,
+and contains information about how many API calls and credits a user
+has made in a given month.</p>
+<p>(Cicero documentation)[https://cicero.azavea.com/docs/usage.html]</p>
+<h2>Available Attributes:</h2>
+<ul>
+<li>.year (integer) - what year is this AccountUsageObject documenting?</li>
+<li>.month (integer) - what month is this object documenting?</li>
+<li>.credits_used (integer) - how many credits were used in this month?</li>
+<li>.count (integer) - how many API calls total were made in this month?</li>
+</ul>
+<h3>Nongeocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results[list of AccountUsageObjects]</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">AccountUsageObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-95'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-95'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-96'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-96'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">monthly_account_usage_dict</span><span class="p">):</span>
+        <span class="n">_copy_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">monthly_account_usage_dict</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">&#39;count&#39;</span><span class="p">,</span> <span class="s">&#39;credits_used&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">))</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">activity_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">ActivityTypeObject</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span>
+                            <span class="n">monthly_account_usage_dict</span><span class="p">[</span><span class="s">&#39;activity_types&#39;</span><span class="p">]]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-97'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-97'>#</a>
+      </div>
+      <h1>VersionObject</h1>
+<p>The VersionObject is returned from the /version call,
+and contains the version number of the Cicero API currently being used.</p>
+<p><a href="https://cicero.azavea.com/docs/version.html">Cicero documentation</a></p>
+<h2>Available Attributes:</h2>
+<ul>
+<li>.version (string) - what Cicero API version is currently being used?</li>
+</ul>
+<h3>Nongeocoded response structure:</h3>
+<ul>
+<li>response<ul>
+<li>results (a VersionObject)<ul>
+<li>version[string]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">VersionObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-98'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-98'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-99'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-99'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">version_dict</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version_dict</span><span class="p">[</span><span class="s">&#39;version&#39;</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-100'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-100'>#</a>
+      </div>
+      <h1>ResponseObject</h1>
+<p>The base ResponseObject is returned from every API call,
+and contains errors, messages, and the results of the API call.</p>
+<h2>Available Attributes:</h2>
+<ul>
+<li>.errors (list of strings) - Errors this API call may have triggered.</li>
+<li>.messages (list of strings) - General Messages for users of the Cicero API.</li>
+<li>.results (appropriate ResultsObject) - The main results data returned
+        from this API call, in the appropriate class as defined above in
+        this file. In <em>one</em> case (the /account/usage call), this is a <em>list</em>
+        of AccountUsageObjects.</li>
+</ul>
+<h3>Nongeocoded response structure:</h3>
+<ul>
+<li>response (a ResponseObject)</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ResponseObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-101'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-101'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-102'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-102'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_dict</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="n">response_dict</span><span class="p">[</span><span class="s">&#39;errors&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">=</span> <span class="n">response_dict</span><span class="p">[</span><span class="s">&#39;messages&#39;</span><span class="p">]</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">response_dict</span><span class="p">[</span><span class="s">&#39;results&#39;</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="s">&#39;candidates&#39;</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">GeocodingResultsObject</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;officials&#39;</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">OfficialNonGeocodingResultsObject</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;districts&#39;</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">DistrictNonGeocodingResultsObject</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;election_events&#39;</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">ElectionEventNonGeocodingResultsObject</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;maps&#39;</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">MapsResultsObject</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;district_types&#39;</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">DistrictTypeResultsObject</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;credit_balance&#39;</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">AccountCreditsRemainingResultsObject</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s">&#39;activity_types&#39;</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">AccountUsageObject</span><span class="p">(</span><span class="n">month</span><span class="p">)</span> <span class="k">for</span> <span class="n">month</span> <span class="ow">in</span> <span class="n">r</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="s">&#39;version&#39;</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">VersionObject</span><span class="p">(</span><span class="n">r</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-103'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-103'>#</a>
+      </div>
+      <p>the base case, though in normal operation we shouldn't get here</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">r</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-104'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-104'>#</a>
+      </div>
+      <h1>RootCiceroObject</h1>
+<p>The base RootCiceroObject is returned from every API call,
+and contains the ResponseObject.</p>
+<h2>Available Attributes:</h2>
+<ul>
+<li>.response (ResponseObject) - The Cicero API response</li>
+</ul>
+<h3>Response structure:</h3>
+<ul>
+<li>This is the base object at the top of the response hierarchy.</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">RootCiceroObject</span><span class="p">(</span><span class="n">AbstractCiceroObject</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-105'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-105'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-106'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-106'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">python_dict_from_cicero_json</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="n">ResponseObject</span><span class="p">(</span><span class="n">python_dict_from_cicero_json</span><span class="p">[</span><span class="s">&#39;response&#39;</span><span class="p">])</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
