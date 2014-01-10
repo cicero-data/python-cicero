@@ -5,8 +5,8 @@ This file contains all unit tests for the python-cicero API wrapper.
 import unittest
 from cicero_rest_connection import *
 
-USERNAME = "a"#"enter your Cicero API username here"
-PASSWORD = "p"#"enter your Cicero API password here"
+USERNAME = "example"#enter your Cicero API username here
+PASSWORD = "example"#enter your Cicero API password here
 
 class CiceroInternationalGeocodingLegislativeDistrictTests(unittest.TestCase):
     
@@ -27,7 +27,7 @@ class CiceroInternationalGeocodingLegislativeDistrictTests(unittest.TestCase):
         
     def test_candidate_geocode(self):
         self.failUnless(self.blob.response.results.candidates[0]
-                        .match_addr == '10 Downing Street, London, London, SW1A 2')
+                        .match_addr == '10 Downing Street, London, SW1A 2')
         self.failUnless(self.blob.response.results.candidates[0]
                         .locator_type == 'StreetAddress')
         
@@ -46,7 +46,7 @@ class CiceroEmptyInternationalGeocodingLegislativeDistrictTests(unittest.TestCas
         
     def test_candidate_geocode(self):
         self.failUnless(self.blob.response.results.candidates[0]
-                        .match_addr == '10 Downing Street, London, London, SW1A 2')
+                        .match_addr == '10 Downing Street, London, SW1A 2')
         self.failUnless(self.blob.response.results.candidates[0]
                         .locator_type == 'StreetAddress')
                         
@@ -77,8 +77,8 @@ class CiceroDomesticGeocodingLegislativeDistrictTests(unittest.TestCase):
         self.blob = None
     
     def test_ambiguous_candidate(self):
-        self.failUnless(self.blob.response.results.candidates[0].match_addr == "340 S 12th St, Philadelphia, PA, 19107")
-        self.failUnless(self.blob.response.results.candidates[1].match_addr == "340 N 12th St, Philadelphia, PA, 19107")
+        self.failUnless(self.blob.response.results.candidates[0].match_addr == "340 S 12th St, Philadelphia, Pennsylvania, 19107")
+        self.failUnless(self.blob.response.results.candidates[1].match_addr == "340 N 12th St, Philadelphia, Pennsylvania, 19107")
     
     def test_district_object(self):
         self.failUnless(self.blob.response.results.candidates[0].districts[0].label == "United States")
@@ -178,11 +178,11 @@ class CiceroElectionEventTests(unittest.TestCase):
         
     def test_election_event_dual_boolean(self):
         self.blob = self.cicero.get_election_event(is_by_election=('true','null'), election_expire_date_on_or_after="2012-11-06")
-        self.failUnless(self.blob.response.results.election_events[1].remarks == "House district 52 and Senate district 19.")
+        self.failUnless(self.blob.response.results.election_events[3].remarks == "House district 52 and Senate district 19.")
         
     def test_election_event(self):
         self.blob = self.cicero.get_election_event(election_expire_date_on_or_after="2012-11-06", is_by_election='true')
-        self.failUnless(self.blob.response.results.election_events[0].chambers[0].name_formal == "Houston City Council")
+        self.failUnless(self.blob.response.results.election_events[3].chambers[0].name_formal == "Houston City Council")
 
 class CiceroMapTests(unittest.TestCase):
     
