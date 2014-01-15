@@ -1,4 +1,4 @@
-from disutils.core import setup
+from setuptools import setup
 
 setup(
     name='PythonCicero',
