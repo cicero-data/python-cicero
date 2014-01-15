@@ -1,1 +1,1 @@
-from . import cicero_rest_connection
+from .cicero_rest_connection import CiceroRestConnection
