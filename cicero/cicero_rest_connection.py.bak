@@ -22,14 +22,14 @@ class CiceroRestABC(object):
     
     This is an Abstract Base Class for the CiceroRestConnection class. Methods
     in CiceroRestConnection for the various API endpoints use the
-    _compose_request_url() and _submit_request() methods defined here to perform
+    compose_request_url() and submit_request() methods defined here to perform
     the mechanics of composing a Cicero API url, requesting it, and receiving
     a JSON response.
     """
     
-    def _compose_request_url(self, ENDPOINT, kwargs):
+    def compose_request_url(self, ENDPOINT, kwargs):
         """
-        # _compose_request_url()
+        # compose_request_url()
         
         Given a Cicero API endpoint (defined in cicero_endpoint_constants.py)
         and zero or any number of keyword arguments (ie, API search parameters,
@@ -55,11 +55,11 @@ class CiceroRestABC(object):
         
         return request_url
 
-    def _submit_request(self, request_url):
+    def submit_request(self, request_url):
         """
-        # _submit_request()
+        # submit_request()
         
-        Given a request_url composed with the _compose_request_url() method, this
+        Given a request_url composed with the compose_request_url() method, this
         method requests the URL from the Cicero API and returns the JSON
         response as a RootCiceroObject (defined in cicero_response_classes.py)
         if successful.
@@ -237,9 +237,9 @@ class CiceroRestConnection(CiceroRestABC):
         credits. Consider it a "beta" feature with all the caveats that implies.
         """
         
-        election_event_request_url = self._compose_request_url(ELECTION_EVENT_ENDPOINT, kwargs)
+        election_event_request_url = self.compose_request_url(ELECTION_EVENT_ENDPOINT, kwargs)
         
-        election_event_response = self._submit_request(election_event_request_url)
+        election_event_response = self.submit_request(election_event_request_url)
         
         return election_event_response
                             
@@ -256,9 +256,9 @@ class CiceroRestConnection(CiceroRestABC):
         The default sorting order for Officials is alphabetical by last_name.
         """
         
-        official_request_url = self._compose_request_url(OFFICIAL_ENDPOINT, kwargs)
+        official_request_url = self.compose_request_url(OFFICIAL_ENDPOINT, kwargs)
         
-        official_response = self._submit_request(official_request_url)
+        official_response = self.submit_request(official_request_url)
         
         return official_response
 
@@ -273,9 +273,9 @@ class CiceroRestConnection(CiceroRestABC):
         for more info and all valid query arguments.
         """
         
-        leg_district_request_url = self._compose_request_url(LEGISLATIVE_DISTRICT_ENDPOINT, kwargs)
+        leg_district_request_url = self.compose_request_url(LEGISLATIVE_DISTRICT_ENDPOINT, kwargs)
             
-        leg_district_response = self._submit_request(leg_district_request_url)
+        leg_district_response = self.submit_request(leg_district_request_url)
         
         return leg_district_response
 
@@ -290,9 +290,9 @@ class CiceroRestConnection(CiceroRestABC):
         for all valid query parameters.
         """
         
-        nonleg_request_url = self._compose_request_url(NONLEGISLATIVE_DISTRICT_ENDPOINT, kwargs)
+        nonleg_request_url = self.compose_request_url(NONLEGISLATIVE_DISTRICT_ENDPOINT, kwargs)
             
-        nonleg_request_response = self._submit_request(nonleg_request_url)
+        nonleg_request_response = self.submit_request(nonleg_request_url)
         
         return nonleg_request_response
 
@@ -333,9 +333,9 @@ class CiceroRestConnection(CiceroRestABC):
         see [the Cicero documentation](https://cicero.azavea.com/docs/map.html)
         """
         
-        map_request_url = self._compose_request_url(MAP_ENDPOINT, kwargs)
+        map_request_url = self.compose_request_url(MAP_ENDPOINT, kwargs)
         
-        map_request_response = self._submit_request(map_request_url)
+        map_request_response = self.submit_request(map_request_url)
         
         return map_request_response
 
@@ -358,7 +358,7 @@ class CiceroRestConnection(CiceroRestABC):
                                         str(self.user_id) + '&token=' +
                                         str(self.token) + '&f=json')
         
-        district_type_response = self._submit_request(district_type_request_url)
+        district_type_response = self.submit_request(district_type_request_url)
         
         return district_type_response
 
@@ -380,7 +380,7 @@ class CiceroRestConnection(CiceroRestABC):
                                         '?user=' + str(self.user_id) + 
                                         '&token=' + str(self.token) + '&f=json')
                                         
-        credits_remaining_response = self._submit_request(credits_remaining_request_url)
+        credits_remaining_response = self.submit_request(credits_remaining_request_url)
         
         return credits_remaining_response
 
@@ -434,7 +434,7 @@ class CiceroRestConnection(CiceroRestABC):
                                         '&token=' + str(self.token) + 
                                         '&f=json')
         
-        account_usage_response = self._submit_request(account_usage_request_url)
+        account_usage_response = self.submit_request(account_usage_request_url)
         
         return account_usage_response
 
@@ -454,6 +454,6 @@ class CiceroRestConnection(CiceroRestABC):
         
         version_request_url = VERSION_ENDPOINT + '?f=json'
         
-        version_response = self._submit_request(version_request_url)
+        version_response = self.submit_request(version_request_url)
         
         return version_response
