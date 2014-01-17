@@ -5,201 +5,188 @@ This file contains all unit tests for the python-cicero API wrapper.
 import unittest
 from cicero_rest_connection import *
 
-USERNAME = "example"#enter your Cicero API username here
-PASSWORD = "example"#enter your Cicero API password here
+USERNAME = "example"  # enter your Cicero API username here
+PASSWORD = "example"  # enter your Cicero API password here
 
-class CiceroInternationalGeocodingLegislativeDistrictTests(unittest.TestCase):
-    
+
+class CiceroBaseTest(unittest.TestCase):
     def setUp(self):
         self.cicero = CiceroRestConnection(USERNAME, PASSWORD)
+        # This is just so we don't have to put a bunch of super calls to setup
+        # everywhere
+        if hasattr(self, 'init'):
+            self.init()
+
+
+class CiceroInternationalGeocodingLegislativeDistrictTests(CiceroBaseTest):
+
+    def init(self):
         self.blob = self.cicero.get_legislative_district(search_loc="10 Downing St, London, UK")
-        
-    def tearDown(self):
-        self.cicero = None
-        self.blob = None
-        
+
     def test_district_object(self):
-        self.failUnless(self.blob.response.results.candidates[0].districts[3]
-                        .district_id == 'Cities of London and Westminster')
-        
+        self.assertEqual(
+            self.blob.response.results.candidates[0].districts[3].district_id,
+            'Cities of London and Westminster')
+
     def test_candidate_count(self):
-        self.failUnless(self.blob.response.results.candidates[0].count.total == 4)
-        
+        self.assertEqual(self.blob.response.results.candidates[0].count.total, 4)
+
     def test_candidate_geocode(self):
-        self.failUnless(self.blob.response.results.candidates[0]
-                        .match_addr == '10 Downing Street, London, SW1A 2')
-        self.failUnless(self.blob.response.results.candidates[0]
-                        .locator_type == 'StreetAddress')
-        
-class CiceroEmptyInternationalGeocodingLegislativeDistrictTests(unittest.TestCase):
-    
-    def setUp(self):
-        self.cicero = CiceroRestConnection(USERNAME, PASSWORD)
-        self.blob = self.cicero.get_legislative_district(search_loc="10 Downing St, London, UK", type="NATIONAL_EXEC")
-        
-    def tearDown(self):
-        self.cicero = None
-        self.blob = None
-        
+        self.assertEqual(
+            self.blob.response.results.candidates[0].match_addr,
+            '10 Downing Street, London, SW1A 2')
+        self.assertEqual(
+            self.blob.response.results.candidates[0].locator_type,
+            'StreetAddress')
+
+
+class CiceroEmptyInternationalGeocodingLegislativeDistrictTests(CiceroBaseTest):
+
+    def init(self):
+        self.blob = self.cicero.get_legislative_district(
+            search_loc="10 Downing St, London, UK", type="NATIONAL_EXEC")
+
     def test_empty_district_object(self):
-        self.failUnless(self.blob.response.results.candidates[0].districts == [])
-        
+        self.assertEqual(self.blob.response.results.candidates[0].districts, [])
+
     def test_candidate_geocode(self):
-        self.failUnless(self.blob.response.results.candidates[0]
-                        .match_addr == '10 Downing Street, London, SW1A 2')
-        self.failUnless(self.blob.response.results.candidates[0]
-                        .locator_type == 'StreetAddress')
-                        
-class CiceroInternationalEmptyGeocodeCandidates(unittest.TestCase):
-    
-    def setUp(self):
-        self.cicero = CiceroRestConnection(USERNAME, PASSWORD)
-        self.blob = self.cicero.get_legislative_district(search_loc="Pla%C3%A7a%20de%20la%20Merc%C3%A8%2C%2010-12.%2008002%20Barcelona", type="NATIONAL_EXEC")
-        
-    def tearDown(self):
-        self.cicero = None
-        self.blob = None
-        
+        self.assertEqual(self.blob.response.results.candidates[0].match_addr,
+                         '10 Downing Street, London, SW1A 2')
+        self.assertEqual(self.blob.response.results.candidates[0].locator_type,
+                         'StreetAddress')
+
+
+class CiceroInternationalEmptyGeocodeCandidates(CiceroBaseTest):
+
+    def init(self):
+        self.blob = self.cicero.get_legislative_district(
+            search_loc="Pla%C3%A7a%20de%20la%20Merc%C3%A8%2C%2010-12.%2008002%20Barcelona",
+            type="NATIONAL_EXEC")
+
     def test_empty_error(self):
-        self.failUnless(self.blob.response.errors == [])
-        
+        self.assertEqual(self.blob.response.errors, [])
+
     def test_empty_candidates(self):
-        self.failUnless(self.blob.response.results.candidates == [])
-        
-class CiceroDomesticGeocodingLegislativeDistrictTests(unittest.TestCase):
-    
-    def setUp(self):
-        self.cicero = CiceroRestConnection(USERNAME, PASSWORD)
-        self.blob = self.cicero.get_legislative_district(search_loc="340 12 ST Philadelphia PA USA")
-        
-    def tearDown(self):
-        self.cicero = None
-        self.blob = None
-    
+        self.assertEqual(self.blob.response.results.candidates, [])
+
+
+class CiceroDomesticGeocodingLegislativeDistrictTests(CiceroBaseTest):
+
+    def init(self):
+        self.blob = self.cicero.get_legislative_district(
+            search_loc="340 12 ST Philadelphia PA USA")
+
     def test_ambiguous_candidate(self):
-        self.failUnless(self.blob.response.results.candidates[0].match_addr == "340 S 12th St, Philadelphia, Pennsylvania, 19107")
-        self.failUnless(self.blob.response.results.candidates[1].match_addr == "340 N 12th St, Philadelphia, Pennsylvania, 19107")
-    
+        self.assertEqual(self.blob.response.results.candidates[0].match_addr,
+                         "340 S 12th St, Philadelphia, Pennsylvania, 19107")
+        self.assertEqual(self.blob.response.results.candidates[1].match_addr,
+                         "340 N 12th St, Philadelphia, Pennsylvania, 19107")
+
     def test_district_object(self):
-        self.failUnless(self.blob.response.results.candidates[0].districts[0].label == "United States")
-        self.failUnless(self.blob.response.results.candidates[0].districts[0].valid_to == None)
-        self.failUnless(self.blob.response.results.candidates[0].districts[0].id == 19)
-        self.failUnless(self.blob.response.results.candidates[0].districts[0].city == "")
-        
-class CiceroDomesticGeocodingNonlegislativeDistrictTests(unittest.TestCase):
-    
-    def setUp(self):
-        self.cicero = CiceroRestConnection(USERNAME, PASSWORD)
-        self.blob = self.cicero.get_nonlegislative_district(search_loc="340 N 12 ST Philadelphia PA USA", type="WATERSHED")
-        
-    def tearDown(self):
-        self.cicero = None
-        self.blob = None
-        
+        self.assertEqual(self.blob.response.results.candidates[0].districts[0].label, "United States")
+        self.assertEqual(self.blob.response.results.candidates[0].districts[0].valid_to, None)
+        self.assertEqual(self.blob.response.results.candidates[0].districts[0].id, 19)
+        self.assertEqual(self.blob.response.results.candidates[0].districts[0].city, "")
+
+
+class CiceroDomesticGeocodingNonlegislativeDistrictTests(CiceroBaseTest):
+
+    def init(self):
+        self.blob = self.cicero.get_nonlegislative_district(
+            search_loc="340 N 12 ST Philadelphia PA USA", type="WATERSHED")
+
     def test_district_object(self):
-        self.failUnless(self.blob.response.results.candidates[0].districts[1].label == "Delaware-Mid Atlantic Coastal")
-        self.failUnless(self.blob.response.results.candidates[0].districts[1].id == 585268)
-        
-class CiceroDomesticNongeocodingNonlegislativeDistrictTests(unittest.TestCase):
-    
-    def setUp(self):
-        self.cicero = CiceroRestConnection(USERNAME, PASSWORD)
-        self.blob = self.cicero.get_nonlegislative_district(lat=40, lon=-75.1, type="WATERSHED")
-        
-    def tearDown(self):
-        self.cicero = None
-        self.blob = None
-        
+        self.assertEqual(self.blob.response.results.candidates[0].districts[1].label,
+                         "Delaware-Mid Atlantic Coastal")
+        self.assertEqual(self.blob.response.results.candidates[0].districts[1].id,
+                         585268)
+
+
+class CiceroDomesticNongeocodingNonlegislativeDistrictTests(CiceroBaseTest):
+
+    def init(self):
+        self.blob = self.cicero.get_nonlegislative_district(
+            lat=40, lon=-75.1, type="WATERSHED")
+
     def test_nongeocoded_district_object(self):
-        self.failUnless(self.blob.response.results.districts[2].label == "Lower Delaware")
-        
-class CiceroDomesticNongeocodingOfficialTests(unittest.TestCase):
-    
-    def setUp(self):
-        self.cicero = CiceroRestConnection(USERNAME, PASSWORD)
-        
-    def tearDown(self):
-        self.cicero = None
-        self.blob = None
-        
+        self.assertEqual(self.blob.response.results.districts[2].label, "Lower Delaware")
+
+
+class CiceroDomesticNongeocodingOfficialTests(CiceroBaseTest):
+
     def test_official_with_multi_district_type(self):
         self.blob = self.cicero.get_official(lat=40, lon=-75.1,
-                                            district_type=("STATE_LOWER","STATE_UPPER"))
+                                             district_type=("STATE_LOWER", "STATE_UPPER"))
         officialOne = self.blob.response.results.officials[0]
         officialTwo = self.blob.response.results.officials[1]
-        self.failUnless(officialOne.last_name == "O'Brien")
-        self.failUnless(officialOne.addresses[0].phone_1 == "(717) 783-8098")
-        self.failUnless(officialTwo.last_name == "Stack")
-        self.failUnless(officialTwo.office.valid_from == "2009-01-06 00:00:00")
-        self.failUnless(officialTwo.office.district.district_type == "STATE_UPPER")
-        self.failUnless(officialTwo.office.representing_country.iso_3_numeric == 840)
-        self.failUnless(officialTwo.office.chamber.term_length == "4 years")
-        self.failUnless(officialTwo.office.chamber.is_chamber_complete == True)
-        self.failUnless(officialTwo.office.chamber.government.name == "Pennsylvania, US")
-        self.failUnless(officialTwo.office.chamber.government.country.name_short == "United States")
-        self.failUnless(officialTwo.identifiers[0].valid_to == None)
-        self.failUnless(officialTwo.identifiers[0].identifier_type == "FACEBOOK")
-        self.failUnless(officialTwo.urls[1] == "http://www.senatorstack.com/")
-        self.failUnless(officialTwo.email_addresses[0] == "stack@pasenate.com")
-        
-class CiceroDomesticGeocodingOfficialTests(unittest.TestCase):
-    
-    def setUp(self):
-        self.cicero = CiceroRestConnection(USERNAME, PASSWORD)
-        
-    def tearDown(self):
-        self.cicero = None
-        self.blob = None
-        
+
+        self.assertEqual(officialOne.last_name, "O'Brien")
+        self.assertEqual(officialOne.addresses[0].phone_1, "(717) 783-8098")
+        self.assertEqual(officialTwo.last_name, "Stack")
+        self.assertEqual(officialTwo.office.valid_from, "2009-01-06 00:00:00")
+        self.assertEqual(officialTwo.office.district.district_type, "STATE_UPPER")
+        self.assertEqual(officialTwo.office.representing_country.iso_3_numeric, 840)
+        self.assertEqual(officialTwo.office.chamber.term_length, "4 years")
+        self.assertEqual(officialTwo.office.chamber.is_chamber_complete, True)
+        self.assertEqual(officialTwo.office.chamber.government.name, "Pennsylvania, US")
+        self.assertEqual(officialTwo.office.chamber.government.country.name_short, "United States")
+        self.assertEqual(officialTwo.identifiers[0].valid_to, None)
+        self.assertEqual(officialTwo.identifiers[0].identifier_type, "FACEBOOK")
+        self.assertEqual(officialTwo.urls[1], "http://www.senatorstack.com/")
+        self.assertEqual(officialTwo.email_addresses[0], "stack@pasenate.com")
+
+
+class CiceroDomesticGeocodingOfficialTests(CiceroBaseTest):
+
     def test_multi_candidate_official_with_multi_district_type(self):
-        self.blob = self.cicero.get_official(search_loc="1001 Northern Lights Blvd Anchorage AK",
-                                                district_type=("STATE_LOWER","STATE_UPPER"))
+        self.blob = self.cicero.get_official(
+            search_loc="1001 Northern Lights Blvd Anchorage AK",
+            district_type=("STATE_LOWER", "STATE_UPPER"))
         officialOne = self.blob.response.results.candidates[0].officials[0]
         officialTwo = self.blob.response.results.candidates[1].officials[1]
-        self.failUnless(officialOne.last_name == "Drummond")
-        self.failUnless(officialOne.addresses[0].phone_1 == "(907) 343-4311")
-        self.failUnless(officialTwo.last_name == "Gardner")
-    
+
+        self.assertEqual(officialOne.last_name, "Drummond")
+        self.assertEqual(officialOne.addresses[0].phone_1, "(907) 343-4311")
+        self.assertEqual(officialTwo.last_name, "Gardner")
+
     def test_official(self):
         self.blob = self.cicero.get_official(search_loc="340 N 12th St Philadelphia",
-                                            district_type="STATE_LOWER")
+                                             district_type="STATE_LOWER")
         officialOne = self.blob.response.results.candidates[0].officials[0]
-        self.failUnless(officialOne.last_name == "O'Brien")
-        self.failUnless(officialOne.addresses[0].phone_1 == "(717) 783-8098")
-    
-class CiceroElectionEventTests(unittest.TestCase):
-    
-    def setUp(self):
-        self.cicero = CiceroRestConnection(USERNAME, PASSWORD)
-        
-    def tearDown(self):
-        self.cicero = None
-        self.blob = None
-        
-    def test_election_event_dual_boolean(self):
-        self.blob = self.cicero.get_election_event(is_by_election=('true','null'), election_expire_date_on_or_after="2012-11-06")
-        self.failUnless(self.blob.response.results.election_events[3].remarks == "House district 52 and Senate district 19.")
-        
-    def test_election_event(self):
-        self.blob = self.cicero.get_election_event(election_expire_date_on_or_after="2012-11-06", is_by_election='true')
-        self.failUnless(self.blob.response.results.election_events[3].chambers[0].name_formal == "Houston City Council")
 
-class CiceroMapTests(unittest.TestCase):
-    
-    def setUp(self):
-        self.cicero = CiceroRestConnection(USERNAME, PASSWORD)
-        
-    def tearDown(self):
-        self.cicero = None
-        self.blob = None
-        
+        self.assertEqual(officialOne.last_name, "O'Brien")
+        self.assertEqual(officialOne.addresses[0].phone_1, "(717) 783-8098")
+
+
+class CiceroElectionEventTests(CiceroBaseTest):
+
+    def test_election_event_dual_boolean(self):
+        self.blob = self.cicero.get_election_event(
+            is_by_election=('true', 'null'),
+            election_expire_date_on_or_after="2012-11-06")
+        self.assertEqual(self.blob.response.results.election_events[3].remarks,
+                         "House district 52 and Senate district 19.")
+
+    def test_election_event(self):
+        self.blob = self.cicero.get_election_event(
+            election_expire_date_on_or_after="2012-11-06",
+            is_by_election='true')
+        self.assertEqual(
+            self.blob.response.results.election_events[3].chambers[0].name_formal,
+            "Houston City Council")
+
+
+class CiceroMapTests(CiceroBaseTest):
+
     def test_map_id(self):
-        self.blob = self.cicero.get_map(state="PA",district_type="STATE_EXEC",country="US")
-        self.failUnless(self.blob.response.results.maps[0].extent.srid == 3857)
-        
+        self.blob = self.cicero.get_map(state="PA",
+                                        district_type="STATE_EXEC",
+                                        country="US")
+        self.assertEqual(self.blob.response.results.maps[0].extent.srid, 3857)
+
     def test_map_id_image_data(self):
         self.blob = self.cicero.get_map(id=2, include_image_data=1)
-        self.failUnless(self.blob.response.results.maps[0].img_src ==
+        self.assertEqual(self.blob.response.results.maps[0].img_src,
         ("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAADICAYAAABS39xVAAAU"
             "1UlEQVR4nO2dCZQV1ZnH//UaGmQTegBRAoeASDiIDKAcBsPgYVxyVBRFWQMBZQ0QwCE66jA"
             "sEpYgyCIuoAghIKAsBlHAREVkiQrBBZUoirQoAcMiohBQ5373vt7Yerv9vlf1/r9zfqe7H6"
@@ -302,77 +289,32 @@ class CiceroMapTests(unittest.TestCase):
             "cuTBwCtFoIZHyIvL03Gd/VNBE7QwiJDvXgHr35AHl7P7kdbTzf2AJ2xtLs1+c6gyN53y+9r"
             "GrmdLL0IfezjIoPTDGDLPkl09SUSdTOEUKigxShsxUpKTQ74z2hPud+36nGMs3vyeo4Txpl"
             "kj4+L0giyf8DaxKt7WnMxp0AAAAASUVORK5CYII="))
-    '''def test_map_id_image_data(self):
-        self.blob = self.cicero.get_map(id=1, include_image_data=1)
-        self.failUnless(self.blob.response.results.maps[0].img_src ==
-        ("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAADICAYAAABS39x"
-        "VAAAEu0lEQVR4nO3dXYhUZRwH4P9qH0Zlmq0kFnhhVDdGQtFWF1FBRBolbVoQSEYpdVG"
-        "2GmWG1VIR1l1FJKtFUFQI4Z1BFxFlBSJGZFtBXlSUEUQW0V7Ue/bMzs6ZPbOtzs7OtPs8"
-        "8OPMnp15z8zNj/M170QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        "AAAAA0BLzUr5N+Sfl8Ta/F4BSy1KOpByNvKxq83HKgva9NYDcSSl9USio89+LsaU1ku9TV"
-        "lVeBzCl3oxqGT22KS1WFPNFb8SJv0fj8sqWB1N62vT+gRlieVTLZ+CesWVVllfWp6PDL1M"
-        "O5a+b/efoGMN7XgAtkfaosqLp2zKxsmqUlzfk48TeNn8eYBpKxdL1cwyXTPfnEX+tbK6ws"
-        "pzyQxrvtXZ/MGB6uTiqh3DX7ogYvKX5slJYQGtcHtXCWrN9cspKYQGtszTlgxgurXu3KSy"
-        "g082J6Poxqntbmx9WWEAnys5jvR6Fe6q6hhQW0Enmp/RGNLqLXWEBnWFhypNRLadleyLO3"
-        "Rcxayj/+65+hQV0itkpz0a1sK5/abRsNm6J2LpZYQGd5Lq0R7Uzhgtr1t8R80amkankUK/"
-        "CAtrp9JQLUs5M6Yp8loUXUrIrhD9FobD+uFFhAe1UMxtD7EiZW1l/Qso1USisj25XWEA7P"
-        "RPFq4H3Vda/U1x/2RvOYQGd4KyUF1MGIj9EzA4PK0W1fHfEvtuaKyuFBbROpazWNXkrg8I"
-        "CWq9SWI88NLEy2ntHxPxvIuYejlj7dD5pX/9GhQVMpmza4qdSZtWtP4a72w+sLj6/Pkduq"
-        "imst1IWTdWHA6aXgdRV2awM62vWfRqFwlm0P2LxZ+VlNbQixi2rkZxTN2ZcEfktFEsrS4D"
-        "/lJ1gz64SLqxZV/el55HsuntsYS34qvy5hWQzl/5St24wRn/bsL/lnxKY1i5NOS/lkhizx"
-        "3XGdxFnH8jPW5UWVE/l9fV6Gjw/y5Wt/DDAzPFElJbM/VtL1k/k8G5N+Xh+xxCYuFMbrM+"
-        "KZHVlmQ4LG+4l7T6GbT1Q8vpNx/WugRlnVdo5ejUtl4zznOxK4rvRuLAuOsZtlo3RqDQBq"
-        "rojnwtrQ4P/L4nxT6zvOY5tbm8w1lXHMRYww2Qn2ctOlj8XY0vl17TD9X5aHk25tYltlhX"
-        "W102MB8xQNT/3VcjhyKdSvjllcZPbmFMy/m9NjgnMIFkZjXf4d8Mkb6/+auPzkzw+ME2tj"
-        "bEFtT/l6hZv98LID0m7W7wd4H8qm8M9uyp3csqDUX6bQf13DAEm067I+2Zn5JOGFu7lfDT"
-        "Kz0kN1vydzYnlJk5gKmyL0e5Zl/JJ5XFfRPk5qYMpK6P4fUKAqXJn5PdxZntY2SmokW6Kt"
-        "ysPshkazJIAdJrTIr9V6sN2vxEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        "AAAAAAAAACAjvMvy+32Y2C6JWwAAAAASUVORK5CYII="))'''
 
-class CiceroAccountCallTests(unittest.TestCase):
-    
-    def setUp(self):
-        self.cicero = CiceroRestConnection(USERNAME, PASSWORD)
-        
-    def tearDown(self):
-        self.cicero = None
-        self.blob = None
-        
+
+class CiceroAccountCallTests(CiceroBaseTest):
+
     def test_credits_remaining(self):
         self.blob = self.cicero.get_account_credits_remaining()
-        self.failUnless(self.blob.response.results.usable_batches[0].credits_purchased == 0)
-        
+        self.assertEqual(
+            self.blob.response.results.usable_batches[0].credits_purchased, 0)
+
     def test_usage(self):
         self.blob = self.cicero.get_account_usage(first_time="2013-11")
-        self.failUnless(self.blob.response.results[0].year == 2013)
-    
-class CiceroDistrictTypeTests(unittest.TestCase):
-    
-    def setUp(self):
-        self.cicero = CiceroRestConnection(USERNAME, PASSWORD)
-        self.blob = self.cicero.get_district_type()
-        
-    def test_district_type(self):
-        self.failUnless(self.blob.response.results.district_types[2].name_short == u'JUDICIAL')
-        
-    def tearDown(self):
-        self.cicero = None
-        self.blob = None
+        self.assertEqual(self.blob.response.results[0].year, 2013)
 
-'''def suite():
-    suite = unittest.TestSuite()
-    for method in dir(CiceroInternational):
-        if method.startswith("test"):
-            suite.addTest(CiceroTests(method))
-    return suite'''
+
+class CiceroDistrictTypeTests(CiceroBaseTest):
+
+    def init(self):
+        self.blob = self.cicero.get_district_type()
+
+    def test_district_type(self):
+        self.assertEqual(
+            self.blob.response.results.district_types[2].name_short, u'JUDICIAL')
+
 
 def main():
     unittest.main()
-    '''runner = unittest.TextTestRunner()
-    test_suite = suite()
-    runner.run(test_suite)'''
-    
+
 if __name__ == '__main__':
     main()
