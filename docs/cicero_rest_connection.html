@@ -17,7 +17,10 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-0'>#</a>
       </div>
-      
+      <p>This file defines an abstract base class, CiceroRestABC, and an inheriting
+class, CiceroRestConnection. The methods in CiceroRestConnection correspond
+to all the endpoints in the Cicero API. These methods use the API request
+methods in CiceroRestABC to wrap the API and get data back.</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="kn">import</span> <span class="nn">urllib</span>
@@ -41,7 +44,7 @@
       <h1>CiceroRestABC</h1>
 <p>This is an Abstract Base Class for the CiceroRestConnection class. Methods
 in CiceroRestConnection for the various API endpoints use the
-compose_request_url() and submit_request() methods defined here to perform
+_compose_request_url() and _submit_request() methods defined here to perform
 the mechanics of composing a Cicero API url, requesting it, and receiving
 a JSON response.</p>
     </div>
@@ -67,7 +70,7 @@ a JSON response.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-3'>#</a>
       </div>
-      <h1>compose_request_url()</h1>
+      <h1>_compose_request_url()</h1>
 <p>Given a Cicero API endpoint (defined in cicero_endpoint_constants.py)
 and zero or any number of keyword arguments (ie, API search parameters,
 enumerated in the Cicero documentation), this method encodes those
@@ -75,7 +78,7 @@ arguments/parameters and composes an API request url with endpoint,
 user id, token, and parameters.</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">compose_request_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ENDPOINT</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">_compose_request_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ENDPOINT</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -122,8 +125,8 @@ user id, token, and parameters.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-6'>#</a>
       </div>
-      <h1>submit_request()</h1>
-<p>Given a request_url composed with the compose_request_url() method, this
+      <h1>_submit_request()</h1>
+<p>Given a request_url composed with the _compose_request_url() method, this
 method requests the URL from the Cicero API and returns the JSON
 response as a RootCiceroObject (defined in cicero_response_classes.py)
 if successful.</p>
@@ -136,7 +139,7 @@ cicero_errors.py).</p>
 a urllib2.URLError.reason is raised.</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">submit_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_url</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">_submit_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_url</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -362,9 +365,9 @@ credits. Consider it a "beta" feature with all the caveats that implies.</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>        
-        <span class="n">election_event_request_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compose_request_url</span><span class="p">(</span><span class="n">ELECTION_EVENT_ENDPOINT</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">election_event_request_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compose_request_url</span><span class="p">(</span><span class="n">ELECTION_EVENT_ENDPOINT</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
         
-        <span class="n">election_event_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit_request</span><span class="p">(</span><span class="n">election_event_request_url</span><span class="p">)</span>
+        <span class="n">election_event_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_request</span><span class="p">(</span><span class="n">election_event_request_url</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="n">election_event_response</span></pre></div>
     </div>
@@ -397,9 +400,9 @@ for more info and all valid query arguments.</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>        
-        <span class="n">official_request_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compose_request_url</span><span class="p">(</span><span class="n">OFFICIAL_ENDPOINT</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">official_request_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compose_request_url</span><span class="p">(</span><span class="n">OFFICIAL_ENDPOINT</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
         
-        <span class="n">official_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit_request</span><span class="p">(</span><span class="n">official_request_url</span><span class="p">)</span>
+        <span class="n">official_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_request</span><span class="p">(</span><span class="n">official_request_url</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="n">official_response</span></pre></div>
     </div>
@@ -430,9 +433,9 @@ for more info and all valid query arguments.</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>        
-        <span class="n">leg_district_request_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compose_request_url</span><span class="p">(</span><span class="n">LEGISLATIVE_DISTRICT_ENDPOINT</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">leg_district_request_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compose_request_url</span><span class="p">(</span><span class="n">LEGISLATIVE_DISTRICT_ENDPOINT</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
             
-        <span class="n">leg_district_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit_request</span><span class="p">(</span><span class="n">leg_district_request_url</span><span class="p">)</span>
+        <span class="n">leg_district_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_request</span><span class="p">(</span><span class="n">leg_district_request_url</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="n">leg_district_response</span></pre></div>
     </div>
@@ -463,9 +466,9 @@ for all valid query parameters.</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>        
-        <span class="n">nonleg_request_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compose_request_url</span><span class="p">(</span><span class="n">NONLEGISLATIVE_DISTRICT_ENDPOINT</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">nonleg_request_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compose_request_url</span><span class="p">(</span><span class="n">NONLEGISLATIVE_DISTRICT_ENDPOINT</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
             
-        <span class="n">nonleg_request_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit_request</span><span class="p">(</span><span class="n">nonleg_request_url</span><span class="p">)</span>
+        <span class="n">nonleg_request_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_request</span><span class="p">(</span><span class="n">nonleg_request_url</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="n">nonleg_request_response</span></pre></div>
     </div>
@@ -517,9 +520,9 @@ see <a href="https://cicero.azavea.com/docs/map.html">the Cicero documentation</
     </div>
     <div class='code'>
       <div class="highlight"><pre>        
-        <span class="n">map_request_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compose_request_url</span><span class="p">(</span><span class="n">MAP_ENDPOINT</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">map_request_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compose_request_url</span><span class="p">(</span><span class="n">MAP_ENDPOINT</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
         
-        <span class="n">map_request_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit_request</span><span class="p">(</span><span class="n">map_request_url</span><span class="p">)</span>
+        <span class="n">map_request_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_request</span><span class="p">(</span><span class="n">map_request_url</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="n">map_request_response</span></pre></div>
     </div>
@@ -556,7 +559,7 @@ for more info.</p>
                                         <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;&amp;token=&#39;</span> <span class="o">+</span>
                                         <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;&amp;f=json&#39;</span><span class="p">)</span>
         
-        <span class="n">district_type_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit_request</span><span class="p">(</span><span class="n">district_type_request_url</span><span class="p">)</span>
+        <span class="n">district_type_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_request</span><span class="p">(</span><span class="n">district_type_request_url</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="n">district_type_response</span></pre></div>
     </div>
@@ -592,7 +595,7 @@ for more info.</p>
                                         <span class="s">&#39;?user=&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span> <span class="o">+</span> 
                                         <span class="s">&#39;&amp;token=&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;&amp;f=json&#39;</span><span class="p">)</span>
                                         
-        <span class="n">credits_remaining_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit_request</span><span class="p">(</span><span class="n">credits_remaining_request_url</span><span class="p">)</span>
+        <span class="n">credits_remaining_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_request</span><span class="p">(</span><span class="n">credits_remaining_request_url</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="n">credits_remaining_response</span></pre></div>
     </div>
@@ -658,7 +661,7 @@ for more info.</p>
                                         <span class="s">&#39;&amp;token=&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">)</span> <span class="o">+</span> 
                                         <span class="s">&#39;&amp;f=json&#39;</span><span class="p">)</span>
         
-        <span class="n">account_usage_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit_request</span><span class="p">(</span><span class="n">account_usage_request_url</span><span class="p">)</span>
+        <span class="n">account_usage_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_request</span><span class="p">(</span><span class="n">account_usage_request_url</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="n">account_usage_response</span></pre></div>
     </div>
@@ -693,7 +696,7 @@ for more info.</p>
       <div class="highlight"><pre>        
         <span class="n">version_request_url</span> <span class="o">=</span> <span class="n">VERSION_ENDPOINT</span> <span class="o">+</span> <span class="s">&#39;?f=json&#39;</span>
         
-        <span class="n">version_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">submit_request</span><span class="p">(</span><span class="n">version_request_url</span><span class="p">)</span>
+        <span class="n">version_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submit_request</span><span class="p">(</span><span class="n">version_request_url</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="n">version_response</span>
 
