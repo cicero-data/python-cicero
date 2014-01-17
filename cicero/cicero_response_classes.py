@@ -335,8 +335,8 @@ class ChamberObject(AbstractCiceroObject):
         _copy_keys(self.__dict__, chamber_dict,
                     ('id', 'type', 'official_count', 'is_chamber_complete',
                     'has_geographic_representation', 'name_native_language', 
-                    'name_formal', 'name', 'url', 'contact_email', 'contact_phone',
-                    'election_rules', 'election_frequency',
+                    'name_formal', 'name', 'url', 'contact_email',
+                    'contact_phone', 'election_rules', 'election_frequency',
                     'term_length', 'term_limit', 'redistricting_rules', 
                     'inauguration_rules', 'vacancy_rules', 'last_update_date',
                     'legislature_update_date', 'notes', 'remarks'))
@@ -395,7 +395,8 @@ class ElectionEventObject(AbstractCiceroObject):
         
         #because .chambers is a list of ChamberObjects, we can't use _copy_keys
         #and will define it here
-        self.chambers = [ChamberObject(c) for c in election_event_dict['chambers']]
+        self.chambers = [ChamberObject(c) for c
+                        in election_event_dict['chambers']]
 
 class DistrictObject(AbstractCiceroObject):
     """
@@ -506,7 +507,8 @@ class OfficeObject(AbstractCiceroObject):
                     'id', 'representing_city'))
         
         self.district = DistrictObject(office_dict['district'])
-        self.representing_country = CountryObject(office_dict['representing_country'])
+        self.representing_country = CountryObject(
+                                        office_dict['representing_country'])
         self.chamber = ChamberObject(office_dict['chamber'])
 
 class AddressObject(AbstractCiceroObject):
@@ -645,16 +647,18 @@ class OfficialObject(AbstractCiceroObject):
     def __init__(self, official_dict):
         _copy_keys(self.__dict__, official_dict,
                     ('last_name', 'initial_term_start_date',
-                    'current_term_start_date', 'web_form_url', 'last_update_date',
-                    'salutation', 'id', 'photo_origin_url', 'middle_initial',
-                    'first_name', 'valid_from', 'notes', 'name_suffix',
-                    'valid_to', 'sk', 'term_end_date', 'urls', 'party',
-                    'email_addresses'))
+                    'current_term_start_date', 'web_form_url',
+                    'last_update_date', 'salutation', 'id', 'photo_origin_url',
+                    'middle_initial', 'first_name', 'valid_from', 'notes',
+                    'name_suffix', 'valid_to', 'sk', 'term_end_date', 'urls',
+                    'party', 'email_addresses'))
                     
         self.addresses = [AddressObject(a) for a in official_dict['addresses']]
         self.office = OfficeObject(official_dict['office'])
-        self.committees = [CommitteeObject(c) for c in official_dict['committees']]
-        self.identifiers = [IdentifierObject(i) for i in official_dict['identifiers']]
+        self.committees = [CommitteeObject(c) for c
+                            in official_dict['committees']]
+        self.identifiers = [IdentifierObject(i) for i
+                            in official_dict['identifiers']]
 
     def find_identifier(self, identifier_type):
         #iterate through self.identifiers and search on type
@@ -987,7 +991,8 @@ class DistrictNonGeocodingResultsObject(AbstractCiceroObject):
 
     def __init__(self, district_nongeocoding_results_dict):
         if 'count' in district_nongeocoding_results_dict:
-            self.count = CountObject(district_nongeocoding_results_dict['count'])
+            self.count = CountObject(
+                                district_nongeocoding_results_dict['count'])
 
         self.districts = [DistrictObject(d) for d in
                         district_nongeocoding_results_dict['districts']]
@@ -1025,7 +1030,8 @@ class OfficialNonGeocodingResultsObject(AbstractCiceroObject):
 
     def __init__(self, official_nongeocoding_results_dict):
         if 'count' in official_nongeocoding_results_dict:
-            self.count = CountObject(official_nongeocoding_results_dict['count'])
+            self.count = CountObject(
+                                official_nongeocoding_results_dict['count'])
 
         self.officials = [OfficialObject(o) for o in
                             official_nongeocoding_results_dict['officials']]
@@ -1068,7 +1074,8 @@ class GeocodingResultsObject(AbstractCiceroObject):
             elif 'districts' in candidate:
                 self.candidates.append(DistrictGeocodingCandidate(candidate))
             elif 'election_events' in candidate:
-                self.candidates.append(ElectionEventGeocodingCandidate(candidate))
+                self.candidates.append(
+                                    ElectionEventGeocodingCandidate(candidate))
             else:
                 #we shouldn't normally get to this case
                 #but if needed, this is the base candidate
