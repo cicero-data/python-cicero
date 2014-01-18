@@ -16,25 +16,33 @@ from cicero_endpoint_constants import *
 from cicero_response_classes import *
 from cicero_errors import *
 
+
+_NETWORK_ERROR = """
+Unable to communicate with the Cicero API.\n
+ Please check you are connected to the network. \n
+ More info is below: \n
+ Reason: """
+
+
 class CiceroRestABC(object):
     """
     # CiceroRestABC
-    
+
     This is an Abstract Base Class for the CiceroRestConnection class. Methods
     in CiceroRestConnection for the various API endpoints use the
     _compose_request_url() and _submit_request() methods defined here to perform
     the mechanics of composing a Cicero API url, requesting it, and receiving
     a JSON response.
     """
-    
-    def _compose_request_url(self, ENDPOINT, kwargs):
+
+    def _compose_request_url(self, endpoint, kwargs):
         """
         # _compose_request_url()
-        
+
         Given a Cicero API endpoint (defined in cicero_endpoint_constants.py)
         and zero or any number of keyword arguments (ie, API search parameters,
         enumerated in the Cicero documentation), this method encodes those
-        arguments/parameters and composes an API request url with endpoint, 
+        arguments/parameters and composes an API request url with endpoint,
         user id, token, and parameters.
         """
 
@@ -42,33 +50,33 @@ class CiceroRestABC(object):
         if 'id' in kwargs:
             object_id = kwargs.pop('id')
 
-            request_url = (ENDPOINT + '/' + str(object_id) + '?user=' +
-                            str(self.user_id) + '&token=' + str(self.token) +
-                            '&f=json&')
+            request_url = (endpoint + '/' + str(object_id) + '?user=' +
+                           str(self.user_id) + '&token=' + str(self.token) +
+                           '&f=json&')
 
         else:
-            request_url = (ENDPOINT + '?user=' + str(self.user_id) + '&token=' +
-                            str(self.token) + '&f=json&')
+            request_url = (endpoint + '?user=' + str(self.user_id) + '&token=' +
+                           str(self.token) + '&f=json&')
 
         query_params = urllib.urlencode(kwargs, True)
         request_url += query_params
-        
+
         return request_url
 
     def _submit_request(self, request_url):
         """
         # _submit_request()
-        
+
         Given a request_url composed with the _compose_request_url() method, this
         method requests the URL from the Cicero API and returns the JSON
         response as a RootCiceroObject (defined in cicero_response_classes.py)
         if successful.
-        
+
         If the Cicero API raises an error (a urllib2.HTTPError),
         the resulting JSON (with error message from the API) and the HTTP status
         code are returned and raised as a CiceroError (defined in
         cicero_errors.py).
-        
+
         If python-cicero cannot communicate with the Cicero API
         (a urllib2.URLError), a NetworkError (defined in cicero_errors.py) with
         a urllib2.URLError.reason is raised.
@@ -82,28 +90,26 @@ class CiceroRestABC(object):
             blob = response.read()
             json_dict = json.loads(blob)
             return RootCiceroObject(json_dict)
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             error_blob = e.read()
             error_dict = json.loads(error_blob)
             error_dict['status_code'] = e.code
             raise CiceroError(error_dict)
-        except urllib2.URLError, e:
-            raise NetworkError("Unable to communicate with the Cicero API.\n"
-                            " Please check you are connected to the network. \n"
-                            " More info is below: \n"
-                            " Reason: ", e.reason)
+        except urllib2.URLError as e:
+            raise NetworkError(_NETWORK_ERROR, e.reason)
+
 
 class CiceroRestConnection(CiceroRestABC):
     """
     # CiceroRestConnection(username, password)
-    
+
     This class authenticates with the Cicero API and has methods to support
     various Cicero ReST endpoints.
 
     [Cicero API documentation](https://cicero.azavea.com/docs/)
-    
+
     ## Class Instantiation and API Authentication
-    
+
     User authentication and calls to Cicero's /token/new.json endpoint is handled
     in the __init__ method of this class. If you get an error that
     your token has expired, simply recreate/create a new class instance with
@@ -112,75 +118,75 @@ class CiceroRestConnection(CiceroRestABC):
 
     If you need to, you can access your username, password, numerical
     Cicero User ID, or current token with this class's attributes:
-        
+
     +   .username,
     +   .password,
     +   .user_id,
     +   .token
 
     ## Defined methods, with corresponding Cicero API calls and documentation:
-        
-    +   get_official(**kwargs) - 
+
+    +   get_official(**kwargs) -
         [/official](https://cicero.azavea.com/docs/official.html)
-    +   get_election_event(**kwargs) - 
+    +   get_election_event(**kwargs) -
         [/election_event](https://cicero.azavea.com/docs/election_event.html)
     +   get_legislative_district(**kwargs) -
         [/legislative_district](https://cicero.azavea.com/docs/district.html)
-    +   get_nonlegislative_district(**kwargs) - 
+    +   get_nonlegislative_district(**kwargs) -
         [/nonlegislative_district](https://cicero.azavea.com/docs/district.html)
-    +   get_map(*kwargs) - 
+    +   get_map(*kwargs) -
         [/map](https://cicero.azavea.com/docs/map.html)
-    +   get_district_type() - 
+    +   get_district_type() -
         [/district_type](https://cicero.azavea.com/docs/district_type.html)
     +   get_account_credits_remaining() -
         [/account/credits_remaining](https://cicero.azavea.com/docs/credits_remaining.html)
-    +   get_account_usage(first_time="", second_time="") - 
+    +   get_account_usage(first_time="", second_time="") -
         [/account/usage](https://cicero.azavea.com/docs/usage.html)
-    +   get_version() - 
+    +   get_version() -
         [/version](https://cicero.azavea.com/docs/version.html)
-        
+
     ## Queries and Keyword Arguments
-    
+
     Most methods can take any number of optional keyword arguments (**kwargs).
     These are the same as discussed in the Cicero documentation and the
     "Arguments allowed in query" listed on each Cicero API endpoint's docs page.
     This class will "urlencode" these optional arguments from what they are in
     Python to standard URL query string parameters. So, you don't need to worry
     about doing that.
-    
+
     Just make sure that they're valid Python arguments, like so:
-        
+
     +   integers=1234 #like Cicero ID's, not enclosed in quotes
     +   strings="Hi I'm a string!" #like addresses, dates, names, booleans, etc
-    
+
     Most arguments you use should be strings or integers.
-    
+
     ## Location queries
-        
+
     Location based queries require location information. At a minimum, either
     a street address, latitude and longitude (x/y) point, OR a fully-qualified
     US, Canadian, or UK zip code and country code. See [the Cicero API docs]
     (http://cicero.azavea.com/docs/query_by_location.html#querying-by-address)
     for more info.
-    
+
     ## Other Queries
-    
+
     Additionally, the Cicero API allows wildcard, OR, and boolean queries.
     (see https://cicero.azavea.com/docs/query.html for more info)
     Python does not allow repeated keyword arguments to functions. To query
     Cicero with an OR condition (which requires repeated arguments), use one
     keyword but place your values in a sequence (a tuple or list), like so:
-        
+
     +   get_official(search_loc="340 N 12th St, Philadelphia, PA, USA",
                      district_type=("STATE_LOWER", "STATE_UPPER"))
-    
+
     To query Cicero with a boolean, use a string as you would in a URL, rather
     than an actual Python boolean True/False value. Like so:
-    
+
     +   get_election_event(is_by_election="true")
-    
+
     Wildcards can be done with an asterisk(s) in the string, like this:
-        
+
     +   get_official(last_name="*e*ning*")
         #would match "Jennings" and "Penington", for example
 
@@ -189,7 +195,7 @@ class CiceroRestConnection(CiceroRestABC):
     def __init__(self, username, password):
         """
         # __init__(username, password)
-        
+
         We initialize the CiceroRestConnection class with a username and
         password. These are then encoded as POST data, and POSTED to the
         TOKEN_ENDPOINT. The response contains a numerical User ID and a token,
@@ -199,10 +205,11 @@ class CiceroRestConnection(CiceroRestABC):
         self.username = username
         self.password = password
 
+        # TODO: add functionality for API keys in addition to tokens
         login_params = urllib.urlencode({
             'username': self.username,
             'password': self.password
-        })#TODO: add functionality for API keys in addition to tokens
+        })
 
         try:
             #getting a token is the only POST request in Cicero, so we will
@@ -219,15 +226,16 @@ class CiceroRestConnection(CiceroRestABC):
             token_error_dict['status_code'] = e.code
             raise CiceroError(token_error_dict)
         except urllib2.URLError, e:
-            raise NetworkError("Unable to communicate with the Cicero API.\n"
-                            " Please check you are connected to the network. \n"
-                            " More info is below: \n"
-                            " Reason: ", e.reason)
-                            
+            raise NetworkError(_NETWORK_ERROR, e.reason)
+
+    def _response_from_endpoint(self, endpoint, args):
+        url = self._compose_request_url(endpoint, args)
+        return self._submit_request(url)
+
     def get_election_event(self, **kwargs):
         """
         # get_election_event(**kwargs)
-        
+
         Queries the Cicero API's election_event endpoint for information
         on global election events. See
         [the Cicero API documentation](https://cicero.azavea.com/docs/election_event.html)
@@ -236,75 +244,56 @@ class CiceroRestConnection(CiceroRestABC):
         Currently, calls made to the /election_event endpoint do not consume
         credits. Consider it a "beta" feature with all the caveats that implies.
         """
-        
-        election_event_request_url = self._compose_request_url(ELECTION_EVENT_ENDPOINT, kwargs)
-        
-        election_event_response = self._submit_request(election_event_request_url)
-        
-        return election_event_response
-                            
+        return self._response_from_endpoint(ELECTION_EVENT_ENDPOINT, kwargs)
+
     def get_official(self, **kwargs):
         """
         # get_official(**kwargs)
-        
+
         Queries the Cicero API's Official endpoint based on a search location,
         Cicero unique id, or a last name. Queries by id and/or last_name are the
         only supported queries that do not require a location.
         See [the Cicero API docs](http://cicero.azavea.com/docs/official.html)
         for more info and all valid query arguments.
-        
+
         The default sorting order for Officials is alphabetical by last_name.
         """
-        
-        official_request_url = self._compose_request_url(OFFICIAL_ENDPOINT, kwargs)
-        
-        official_response = self._submit_request(official_request_url)
-        
-        return official_response
+
+        return self._response_from_endpoint(OFFICIAL_ENDPOINT, kwargs)
 
     def get_legislative_district(self, **kwargs):
         """
         # get_legislative_district(**kwargs)
-        
+
         Queries the Cicero API's /legislative_district endpoint for legislative
         district info based on location, unique id, etc.
 
         See [the Cicero API docs](https://cicero.azavea.com/docs/district.html)
         for more info and all valid query arguments.
         """
-        
-        leg_district_request_url = self._compose_request_url(LEGISLATIVE_DISTRICT_ENDPOINT, kwargs)
-            
-        leg_district_response = self._submit_request(leg_district_request_url)
-        
-        return leg_district_response
+        return self._response_from_endpoint(LEGISLATIVE_DISTRICT_ENDPOINT, kwargs)
 
     def get_nonlegislative_district(self, **kwargs):
         """
         # get_nonlegislative_district(**kwargs)
-        
+
         Queries the Cicero API's /nonlegislative_district endpoint for
         nonlegislative district info based on location, unique id, etc.
 
         See the [Cicero API docs](https://cicero.azavea.com/docs/district.html)
         for all valid query parameters.
         """
-        
-        nonleg_request_url = self._compose_request_url(NONLEGISLATIVE_DISTRICT_ENDPOINT, kwargs)
-            
-        nonleg_request_response = self._submit_request(nonleg_request_url)
-        
-        return nonleg_request_response
+        return self._response_from_endpoint(NONLEGISLATIVE_DISTRICT_ENDPOINT, kwargs)
 
     def get_map(self, **kwargs):
         """
         # get_map(**kwargs)
-        
+
         Queries the Cicero API's /map endpoint for an image map of a particular
         district.
-        
+
         ## Image data
-        
+
         A semi-temporary URL to a hosted map image is always returned, but
         will be deleted off Azavea's servers every several days. To return
         base64-encoded text image data also (which you can cache indefinitely),
@@ -326,23 +315,18 @@ class CiceroRestConnection(CiceroRestABC):
         which will produce:
             /map?include_image_data=1&other_arguments_here...
         and happens to work just fine with the Cicero API :-)
-        
+
         ## More info
 
         For more information on the /map call and other styling parameters,
         see [the Cicero documentation](https://cicero.azavea.com/docs/map.html)
         """
-        
-        map_request_url = self._compose_request_url(MAP_ENDPOINT, kwargs)
-        
-        map_request_response = self._submit_request(map_request_url)
-        
-        return map_request_response
+        return self._response_from_endpoint(MAP_ENDPOINT, kwargs)
 
     def get_district_type(self):
         """
         # get_district_type()
-        
+
         Queries the Cicero API's /district_type endpoint for more information
         on what possible district types are available in the API and their
         descriptions. Note not all district types may be available in all
@@ -354,18 +338,15 @@ class CiceroRestConnection(CiceroRestABC):
         for more info.
         """
 
-        district_type_request_url = (DISTRICT_TYPE_ENDPOINT + '?user=' +
-                                        str(self.user_id) + '&token=' +
-                                        str(self.token) + '&f=json')
-        
-        district_type_response = self._submit_request(district_type_request_url)
-        
-        return district_type_response
+        url = (DISTRICT_TYPE_ENDPOINT + '?user=' +
+               str(self.user_id) + '&token=' +
+               str(self.token) + '&f=json')
+        return self._submit_request(url)
 
     def get_account_credits_remaining(self):
         """
         # get_account_credits_remaining()
-        
+
         Queries the Cicero API's /account/credits_remaining endpoint for information
         about how many credits a user account has left, when they expire, and an
         user's overdraft limit.
@@ -376,24 +357,21 @@ class CiceroRestConnection(CiceroRestABC):
         for more info.
         """
 
-        credits_remaining_request_url = (ACCOUNT_CREDITS_REMAINING_ENDPOINT +
-                                        '?user=' + str(self.user_id) + 
-                                        '&token=' + str(self.token) + '&f=json')
-                                        
-        credits_remaining_response = self._submit_request(credits_remaining_request_url)
-        
-        return credits_remaining_response
+        url = (ACCOUNT_CREDITS_REMAINING_ENDPOINT +
+               '?user=' + str(self.user_id) +
+               '&token=' + str(self.token) + '&f=json')
+        return self._submit_request(url)
 
     def get_account_usage(self, first_time, second_time=""):
         """
         # get_account_usage(first_time, second_time)
-        
+
         Queries the Cicero API's /account/usage endpoint for information about
         how many credits a user account has used by month and API call type for
         a given period of time.
 
         This API call consumes no credits.
-        
+
         ## Time arguments
 
         The first_time argument is required, but the second_time argument (for
@@ -401,7 +379,7 @@ class CiceroRestConnection(CiceroRestABC):
         You may pass straight strings or use the keywords. If both time
         arguments are used without keywords, the earlier time must come before
         the later time. IE, Pythonic rules about arguments apply.
-        
+
         ### Examples:
             1. get_account_usage(first_time="YYYY") or get_account_usage("YYYY"):
                 will return all available usage history in the given year.
@@ -421,27 +399,19 @@ class CiceroRestConnection(CiceroRestABC):
         for more info.
         """
 
-        if not second_time:
-            account_usage_request_url = (ACCOUNT_USAGE_ENDPOINT + '/' +
-                                        first_time +
-                                        '?user=' + str(self.user_id) +
-                                        '&token=' + str(self.token) + 
-                                        '&f=json')
-        else: # second_time != ""
-            account_usage_request_url = (ACCOUNT_USAGE_ENDPOINT + '/' + 
-                                        first_time + '/to/' + second_time +
-                                        '?user=' + str(self.user_id) + 
-                                        '&token=' + str(self.token) + 
-                                        '&f=json')
-        
-        account_usage_response = self._submit_request(account_usage_request_url)
-        
-        return account_usage_response
+        path = (first_time + '/to/' + second_time
+                if second_time
+                else first_time)
+        url = (ACCOUNT_USAGE_ENDPOINT + '/' + path +
+               '?user=' + str(self.user_id) +
+               '&token=' + str(self.token) +
+               '&f=json')
+        return self._submit_request(url)
 
     def get_version(self):
         """
         # get_version()
-        
+
         Queries Cicero to determine the current API version being used. Note,
         the version that all of the ENDPOINT constants use is hardcoded into
         their URLs in the cicero_endpoint_constants.py file.
@@ -451,9 +421,6 @@ class CiceroRestConnection(CiceroRestABC):
         See [the Cicero docs](https://cicero.azavea.com/docs/version.html)
         for more info.
         """
-        
+
         version_request_url = VERSION_ENDPOINT + '?f=json'
-        
-        version_response = self._submit_request(version_request_url)
-        
-        return version_response
+        return self._submit_request(version_request_url)
