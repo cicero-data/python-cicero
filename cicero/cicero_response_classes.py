@@ -1,9 +1,9 @@
 """
 This file defines python classes for every JSON object returned in responses
-from the endpoints of the Cicero API. When an API request is submitted and data 
+from the endpoints of the Cicero API. When an API request is submitted and data
 received (using the CiceroRestConnection class in cicero_rest_connection.py, a
 RootCiceroObject (defined here) is instantiated from the API's JSON response.
-The RootCiceroObject instantiates a ResponseObject (which often instantiates a 
+The RootCiceroObject instantiates a ResponseObject (which often instantiates a
 GeocodingResultsObject, which follows with one of the GeocodingCandidate
 objects, etc etc) and so on in a cascading fashion, until a class has been
 instantiated for every corresponding JSON object in the API response.
@@ -15,16 +15,15 @@ In other words, at the end we are left with a RootCiceroObject instance
 containing instances of other classes defined in this file.
 
 An abstract base class, AbstractCiceroObject, defines __str__ and __repr__
-methods which all classes use. Two at-large "private" functions - _key_copy
-and _copy_keys facilitate initializing class attributes from JSON values.
+methods which all classes use. The private function _copy_keys facilitates
+initializing class attributes from JSON values.
 """
 
-def _key_copy(lhs, rhs, key):
-    lhs[key] = rhs[key]
 
 def _copy_keys(lhs, rhs, keys):
     for k in keys:
         lhs[k] = rhs[k]
+
 
 class AbstractCiceroObject(object):
 
@@ -34,69 +33,71 @@ class AbstractCiceroObject(object):
     def __str__(self):
         return str(self.__dict__)
 
+
 class IdentifierObject(AbstractCiceroObject):
     """
     # IdentifierObject
-    
+
     This class represents the attributes of any external identifiers
     that most officials have - Facebook page, Twitter, Project VoteSmart, etc
 
-    [Cicero Documentation](https://cicero.azavea.com/docs/identifier.html)  
+    [Cicero Documentation](https://cicero.azavea.com/docs/identifier.html)
 
-    ## Available Attributes (all types can also be None/empty strings):  
-    
-    +   .valid_from (string) - datetime this identifier started being valid  
-    +   .official (integer)  - Cicero unique ID of the official owning this identifier  
-    +   .valid_to (string)   - datetime this identifier will no longer be valid  
-    +   .sk (integer)        - historical surrogate key for this identifier  
+    ## Available Attributes (all types can also be None/empty strings):
+
+    +   .valid_from (string) - datetime this identifier started being valid
+    +   .official (integer)  - Cicero unique ID of the official owning this identifier
+    +   .valid_to (string)   - datetime this identifier will no longer be valid
+    +   .sk (integer)        - historical surrogate key for this identifier
     +   .last_update_date (string) - datetime this identifier was last updated
-    +   .identifier_type (string) - Possible identifier types include, but  
+    +   .identifier_type (string) - Possible identifier types include, but
         aren't limited to:
-        +   "CRP"      - Center for Responsive Politics  
-        +   "BIOGUIDE" - Congressional Biographical Directory  
-        +   "FACEBOOK" - Facebook  
-        +   "FEC"      - Federal Election Commission  
-        +   "FLICKR"   - Flickr  
-        +   "GOOGLEPLUS" - Google+  
-        +   "GOVTRACK" - GovTrack  
-        +   "Picasa"   - Picasa  
-        +   "VOTESMART" - Project Vote Smart  
-        +   "RSS"      - RSS Feeds  
-        +   "TWITTER"  - Twitter  
-        +   "YOUTUBE"  - YouTube  
-    +   .id (integer)        - Cicero unique ID of this identifier  
-    +   .identifier_value (string) - username, account, or full or partial web URL  
-        for this external identifier  
+        +   "CRP"      - Center for Responsive Politics
+        +   "BIOGUIDE" - Congressional Biographical Directory
+        +   "FACEBOOK" - Facebook
+        +   "FEC"      - Federal Election Commission
+        +   "FLICKR"   - Flickr
+        +   "GOOGLEPLUS" - Google+
+        +   "GOVTRACK" - GovTrack
+        +   "Picasa"   - Picasa
+        +   "VOTESMART" - Project Vote Smart
+        +   "RSS"      - RSS Feeds
+        +   "TWITTER"  - Twitter
+        +   "YOUTUBE"  - YouTube
+    +   .id (integer)        - Cicero unique ID of this identifier
+    +   .identifier_value (string) - username, account, or full or partial web URL
+        for this external identifier
     +   .__dict__ (dictionary) - As with any Python class, this IdentiferObject
-        can be navigated by Python ['dictionary']['bracket']['notation']  
+        can be navigated by Python ['dictionary']['bracket']['notation']
 
-    ### Geocoded response structure:  
-    
-    +   response  
-        +   results  
-            +   candidates[list]  
-                +   officials[list]  
-                    +   identifiers[list of IdentifierObjects, sorted by  
-                        "identifier_type" ascending]  
+    ### Geocoded response structure:
 
-    ### Non-geocoded response structure:  
-    
     +   response
-        +   results  
-            +   officials[list]  
+        +   results
+            +   candidates[list]
+                +   officials[list]
+                    +   identifiers[list of IdentifierObjects, sorted by
+                        "identifier_type" ascending]
+
+    ### Non-geocoded response structure:
+
+    +   response
+        +   results
+            +   officials[list]
                 +   identifiers[list of IdentifierObjects, sorted by
                     "identifier_type" ascending]
     """
-    
+
     def __init__(self, identifier_dict):
         _copy_keys(self.__dict__, identifier_dict,
                    ('valid_from', 'valid_to', 'sk', 'id', 'official',
                     'last_update_date', 'identifier_type', 'identifier_value'))
 
+
 class CommitteeObject(AbstractCiceroObject):
     """
     # CommitteeObject
-    
+
     This class represents the attributes of a committee a legislator belongs to.
     Committees are an antiquated feature of Cicero and few officials are
     associated with them, so this information may not be up to date.
@@ -104,7 +105,7 @@ class CommitteeObject(AbstractCiceroObject):
     [Cicero documentation](https://cicero.azavea.com/docs/committee.html)
 
     ## Available Attributes (all types can also be None/empty strings):
-    
+
     +   .valid_from (string) - datetime this committee started being valid
     +   .description (string) - text description of this committee
     +   .valid_to (string)   - datetime this committee will no longer be valid
@@ -125,16 +126,17 @@ class CommitteeObject(AbstractCiceroObject):
             +   officials[list]
                 +   committees[list of CommitteeObjects]
     """
-    
+
     def __init__(self, comm_dict):
         _copy_keys(self.__dict__, comm_dict,
                    ('valid_from', 'description', 'valid_to', 'sk',
                     'last_update_date', 'id'))
 
+
 class CountryObject(AbstractCiceroObject):
     """
     # CountryObject
-    
+
     This class represents the attributes of a country object within a
     GovernmentObject (itself in turn within a ChamberObject), OR
     a "representing_country" object within an OfficeObject
@@ -143,7 +145,7 @@ class CountryObject(AbstractCiceroObject):
     [Cicero documentation](https://cicero.azavea.com/docs/country.html)
 
     ## Available Attributes (all types can also be None/empty strings):
-    
+
     +   .status (string) - status of this country (often "UN Member State")
     +   .name_short (string) - country short name
     +   .name_short_iso (string) - ISO recognized short name
@@ -168,38 +170,38 @@ class CountryObject(AbstractCiceroObject):
             +   candidates[list]
                 +   officials[list]
                     +   office
-                        +   representing_country (a CountryObject)  
-    
+                        +   representing_country (a CountryObject)
+
     +   response
         +   results
             +   candidates[list]
                 +   officials[list]
                     +   chamber
                         +   government
-                            +   country (a CountryObject)  
-    
+                            +   country (a CountryObject)
+
     +   response
         +   results
             +   candidates[list]
                 +   election_events[list]
                     +   chambers[list]
                         +   government
-                            +   country (a CountryObject)  
+                            +   country (a CountryObject)
 
     ### Non-geocoded response structures:
     +   response
         +   results
             +   officials[list]
                 +   office
-                    +   representing_country (a CountryObject)  
-    
+                    +   representing_country (a CountryObject)
+
     +   response
         +   results
             +   officials[list]
                 +   chamber
                     +   government
                         +   country (a CountryObject)
-    
+
     +   response
         +   results
             +   election_events[list]
@@ -207,24 +209,25 @@ class CountryObject(AbstractCiceroObject):
                     +   government
                         +   country (a CountryObject)
     """
-    
+
     def __init__(self, country_dict):
         _copy_keys(self.__dict__, country_dict,
-                    ('status', 'name_short', 'gmi_3', 'valid_from',
+                   ('status', 'name_short', 'gmi_3', 'valid_from',
                     'name_short_iso', 'name_short_local', 'valid_to', 'id',
                     'sk', 'name_short_un', 'fips', 'last_update_date', 'iso_3',
                     'iso_2', 'iso_3_numeric', 'name_long_local', 'name_long'))
 
+
 class GovernmentObject(AbstractCiceroObject):
     """
     # GovernmentObject
-    
+
     This class represents a government, within an official's ChamberObject.
 
     [Cicero documentation](https://cicero.azavea.com/docs/government.html)
 
     ## Available Attributes (all types can also be None/empty strings):
-        
+
     +   .city (string) - Local place where government is located
     +   .state (string) - State/province/territory where government is located
     +   .name (string) - name of government
@@ -233,14 +236,14 @@ class GovernmentObject(AbstractCiceroObject):
     +   .type (string) - level of government: LOCAL, STATE, NATIONAL or TRANSNATIONAL
 
     ### Geocoded response structures:
-    
+
     +   response
         +   results
             +   candidates[list]
                 +   officials[list]
                     +   chamber
                         +   government (a GovernmentObject)
-                        
+
     +   response
         +   results
             +   candidates[list]
@@ -249,37 +252,38 @@ class GovernmentObject(AbstractCiceroObject):
                         +   government (a GovernmentObject)
 
     ### Non-geocoded response structures:
-    
+
     +   response
         +   results
             +   officials[list]
                 +   chamber
                     +   government (a GovernmentObject)
-                    
+
     +   response
         +   results
             +   election_events[list]
                 +   chambers[list]
                     +   government (a GovernmentObject)
     """
-    
+
     def __init__(self, gov_dict):
         _copy_keys(self.__dict__, gov_dict,
-                    ('city', 'state', 'name', 'notes', 'type'))
-        
+                   ('city', 'state', 'name', 'notes', 'type'))
+
         self.country = CountryObject(gov_dict['country'])
+
 
 class ChamberObject(AbstractCiceroObject):
     """
     # ChamberObject
-    
+
     This class represents the chamber an official serves in
     (legislature, senate, house of representatives, etc).
 
     [Cicero documentation](https://cicero.azavea.com/docs/chamber.html)
 
     ## Available Attributes (all types can also be None/empty strings):
-    
+
     +   .id (integer) - Cicero unique ID
     +   .type (string) - Chamber type, LOWER or UPPER or EXEC
     +   .official_count (integer) - number of officials in this chamber
@@ -312,7 +316,7 @@ class ChamberObject(AbstractCiceroObject):
             +   candidates[list]
                 +   officials[list]
                     +   chamber
-    
+
     +   response
         +   results
             +   candidates[list]
@@ -324,35 +328,36 @@ class ChamberObject(AbstractCiceroObject):
         +   results
             +   officials[list]
                 +   chamber
-    
+
     +   response
         +   results
             +   election_events[list]
                 +   chambers[list of ChamberObjects]
     """
-    
+
     def __init__(self, chamber_dict):
         _copy_keys(self.__dict__, chamber_dict,
-                    ('id', 'type', 'official_count', 'is_chamber_complete',
-                    'has_geographic_representation', 'name_native_language', 
+                   ('id', 'type', 'official_count', 'is_chamber_complete',
+                    'has_geographic_representation', 'name_native_language',
                     'name_formal', 'name', 'url', 'contact_email', 'contact_phone',
                     'election_rules', 'election_frequency',
-                    'term_length', 'term_limit', 'redistricting_rules', 
+                    'term_length', 'term_limit', 'redistricting_rules',
                     'inauguration_rules', 'vacancy_rules', 'last_update_date',
                     'legislature_update_date', 'notes', 'remarks'))
-        
+
         self.government = GovernmentObject(chamber_dict['government'])
+
 
 class ElectionEventObject(AbstractCiceroObject):
     """
     # ElectionEventObject
-    
+
     This class represents an election event object.
 
     [Cicero documentation](https://cicero.azavea.com/docs/election_event.html)
 
     ## Available Attributes (all types can also be None/empty strings):
-    
+
     +   .is_approximate (boolean) - is the election date appoximated or precise?
     +   .last_update_date (string) - datetime this election event was last updated
     +   .remarks (string) - general remarks
@@ -384,23 +389,25 @@ class ElectionEventObject(AbstractCiceroObject):
         +   results
             +   election_events[list of ElectionEventObjects]
     """
-    
+
     def __init__(self, election_event_dict):
         _copy_keys(self.__dict__, election_event_dict,
-                    ('is_approximate', 'last_update_date', 'remarks',
+                   ('is_approximate', 'last_update_date', 'remarks',
                     'election_date_text', 'valid_from', 'is_national',
                     'is_state', 'is_by_election', 'is_referendum', 'valid_to',
                     'label', 'sk', 'id', 'is_primary_election', 'urls',
                     'is_runoff_election', 'is_transnational'))
-        
+
         #because .chambers is a list of ChamberObjects, we can't use _copy_keys
         #and will define it here
+        #import ipdb; ipdb.set_trace()
         self.chambers = [ChamberObject(c) for c in election_event_dict['chambers']]
+
 
 class DistrictObject(AbstractCiceroObject):
     """
     # DistrictObject
-    
+
     This class represents a legislative or nonlegislative district object.
     The same object is returned with either the official API call or either
     legislative or nonlegislative district calls.
@@ -408,7 +415,7 @@ class DistrictObject(AbstractCiceroObject):
     [Cicero documentation](https://cicero.azavea.com/docs/district.html)
 
     ## Available Attributes (all types can also be None/empty strings):
-    
+
     +   .district_type (string) - name_short value for this district's
         [main type](https://cicero.azavea.com/docs/district_type.html)
     +   .city (string) - local municipality this district represents
@@ -436,7 +443,7 @@ class DistrictObject(AbstractCiceroObject):
                 +   officials[list]
                     +   office
                         +   district
-        
+
     +   response
         +   results
             +   candidates[list]
@@ -448,29 +455,30 @@ class DistrictObject(AbstractCiceroObject):
             +   officials[list]
                 +   office
                     +   district
-        
+
     +   response
         +   results
             +   districts[list of DistrictObjects]
     """
-    
+
     def __init__(self, district_dict):
         _copy_keys(self.__dict__, district_dict,
-                    ('district_type', 'city', 'valid_from', 'country',
+                   ('district_type', 'city', 'valid_from', 'country',
                     'district_id', 'valid_to', 'label', 'sk', 'subtype',
                     'state', 'last_update_date', 'data', 'id'))
+
 
 class OfficeObject(AbstractCiceroObject):
     """
     # OfficeObject
-    
+
     This class represents details about the political office an elected
     official holds.
 
     [Cicero documentation](https://cicero.azavea.com/docs/office.html)
 
     ## Available Attributes (all types can also be None/empty strings):
-        
+
     +   .valid_from (string) - datetime this office is valid from
     +   .district (DistrictObject) - DistrictObject this office represents
     +   .representing_country (CountryObject) - CountryObject this office is a part of
@@ -498,28 +506,29 @@ class OfficeObject(AbstractCiceroObject):
             +   officials[list]
                 +   office
     """
-    
+
     def __init__(self, office_dict):
         _copy_keys(self.__dict__, office_dict,
-                    ('valid_from', 'representing_state', 'notes', 'title',
+                   ('valid_from', 'representing_state', 'notes', 'title',
                     'valid_to', 'sk', 'last_update_date', 'election_rules',
                     'id', 'representing_city'))
-        
+
         self.district = DistrictObject(office_dict['district'])
         self.representing_country = CountryObject(office_dict['representing_country'])
         self.chamber = ChamberObject(office_dict['chamber'])
 
+
 class AddressObject(AbstractCiceroObject):
     """
     # AddressObject
-    
+
     This class represents details about physical addresses an official may have,
     such as their district office, capitol office, phone and fax numbers, etc.
 
     [Cicero documentation](https://cicero.azavea.com/docs/official.html#Official.addresses)
 
     ## Available Attributes (all types can also be None/empty strings):
-        
+
     +   .county (string) - if applicable, county of address. *Not* to be confused
         with a country!
     +   .postal_code (string)
@@ -558,10 +567,10 @@ class AddressObject(AbstractCiceroObject):
             +   officials[list]
                 +   addresses[list of AddressObjects]
     """
-    
+
     def __init__(self, address_dict):
         _copy_keys(self.__dict__, address_dict,
-                    ('county', 'postal_code', 'phone_1', 'phone_2', 'fax_1',
+                   ('county', 'postal_code', 'phone_1', 'phone_2', 'fax_1',
                     'fax_2', 'city', 'state', 'address_1', 'address_2',
                     'address_3'))
 
@@ -569,33 +578,35 @@ class AddressObject(AbstractCiceroObject):
     #an envelope address label
     def get_formatted_mailing_address(self, county=False):
         mailing_address = ""
-        
-        add_part = lambda template, string: template % string if string else ""
-        
+
+        def add_part(template, string):
+            return template % string if string else ""
+
         mailing_address += add_part("%s\n", self.address_1)
         mailing_address += add_part("%s\n", self.address_2)
         mailing_address += add_part("%s\n", self.address_3)
         mailing_address += add_part("%s, ", self.city)
-        
+
         #if user has set county=True and wants the county in the address
         if county:
             mailing_address += add_part("%s, ", self.county)
-        
+
         mailing_address += add_part("%s ", self.state)
         mailing_address += add_part("%s", self.postal_code)
-        
+
         return mailing_address
+
 
 class OfficialObject(AbstractCiceroObject):
     """
     # OfficialObject
-    
+
     This class is the main class for details about a particular elected official.
 
     [Cicero documentation](https://cicero.azavea.com/docs/official.html)
 
     ## Available Attributes (all types can also be None/empty strings):
-    
+
     +   .last_name (string) - official's last name
     +   .addresses (list of AddressObjects)
     +   .office (OfficeObject)
@@ -641,16 +652,16 @@ class OfficialObject(AbstractCiceroObject):
         +   results
             +   officials[list of OfficialObjects]
     """
-    
+
     def __init__(self, official_dict):
         _copy_keys(self.__dict__, official_dict,
-                    ('last_name', 'initial_term_start_date',
+                   ('last_name', 'initial_term_start_date',
                     'current_term_start_date', 'web_form_url', 'last_update_date',
                     'salutation', 'id', 'photo_origin_url', 'middle_initial',
                     'first_name', 'valid_from', 'notes', 'name_suffix',
                     'valid_to', 'sk', 'term_end_date', 'urls', 'party',
                     'email_addresses'))
-                    
+
         self.addresses = [AddressObject(a) for a in official_dict['addresses']]
         self.office = OfficeObject(official_dict['office'])
         self.committees = [CommitteeObject(c) for c in official_dict['committees']]
@@ -662,10 +673,11 @@ class OfficialObject(AbstractCiceroObject):
         return [identifier for identifier in self.identifiers
                 if identifier.identifier_type == identifier_type]
 
+
 class CountObject(AbstractCiceroObject):
     """
     # CountObject
-    
+
     The CountObject class contains pagination details for responses. The Cicero
     database is a large one, with many more officials, districts, and election
     events than is practical to return in one ReST response. So, features are
@@ -675,7 +687,7 @@ class CountObject(AbstractCiceroObject):
     [Cicero documentation](https://cicero.azavea.com/docs/sorting_paging.html)
 
     ## Available Attributes (all are always either positive or negative integers):
-        
+
     +   .to - highest result returned in this response
     +   .from_ - lowest result returned in this response
             (note the trailing underscore - "from" is a reserved word in python)
@@ -692,34 +704,36 @@ class CountObject(AbstractCiceroObject):
         +   results
             +   count
     """
-    
+
     def __init__(self, count_dict):
         _copy_keys(self.__dict__, count_dict,
-                    ('to','total'))
-        self.from_ = count_dict['from'] #get around "from" being reserve word
+                   ('to', 'total'))
+        self.from_ = count_dict['from']  # get around "from" being reserve word
+
 
 class GeocodingCandidate(AbstractCiceroObject):
     """
     # GeocodingCandidate
-    
+
     The GeocodingCandidate class is what the DistrictGeocodingCandidate and
     OfficialGeocodingCandidate classes inherit from, and defines base fields
     for describing a geocoded address candidate. It is erroneous for the
     default GeocodingCandidate class to appear "in the wild," instead of its
     inheriting classes DistrictGeocodingCandidate and OfficialGeocodingCandidate.
     """
-    
+
     def __init__(self, geocoding_candidate_dict):
         _copy_keys(self.__dict__, geocoding_candidate_dict,
-                    ('match_addr', 'wkid', 'locator', 'score', 'locator_type',
+                   ('match_addr', 'wkid', 'locator', 'score', 'locator_type',
                     'y', 'x', 'geoservice'))
-        
+
         self.count = CountObject(geocoding_candidate_dict['count'])
+
 
 class DistrictGeocodingCandidate(GeocodingCandidate):
     """
     # DistrictGeocodingCandidate
-    
+
     The DistrictGeocodingCandidate class defines base fields
     for describing a geocoded address candidate, and a .districts attribute
     containing the main list of DistrictObjects and district information.
@@ -731,7 +745,7 @@ class DistrictGeocodingCandidate(GeocodingCandidate):
     +    [on the /district call](https://cicero.azavea.com/docs/district.html)
 
     ## Available Attributes (inherited from GeocodingCandidate):
-    
+
     +   .count (CountObject) - pagination details on numbers of districts returned
     +   .match_addr (string) - candidate address that the geocoder was able to match
     +   .wkid (integer) - for Well Known ID, the EPSG code (spatial reference system)
@@ -745,7 +759,7 @@ class DistrictGeocodingCandidate(GeocodingCandidate):
     +   .geoservice (string) - Geocoding service provider used
 
     ## Available Attributes (specific to DistrictGeocodingCandidate):
-    
+
     +   .districts (list of DistrictObjects) - DistrictObjects for this candidate
 
     ### Geocoded response structure:
@@ -756,15 +770,16 @@ class DistrictGeocodingCandidate(GeocodingCandidate):
 
     def __init__(self, district_geocoding_candidate_dict):
         super(DistrictGeocodingCandidate, self).__init__(
-                                            district_geocoding_candidate_dict)
-        
+            district_geocoding_candidate_dict)
+
         self.districts = [DistrictObject(d) for d in
-                            district_geocoding_candidate_dict['districts']]
+                          district_geocoding_candidate_dict['districts']]
+
 
 class OfficialGeocodingCandidate(GeocodingCandidate):
     """
     # OfficialGeocodingCandidate
-    
+
     The OfficialGeocodingCandidate class defines base fields
     for describing a geocoded address candidate, and a .officials attribute
     containing the main list of OfficialObjects and official information.
@@ -776,7 +791,7 @@ class OfficialGeocodingCandidate(GeocodingCandidate):
     +   [for /official call](https://cicero.azavea.com/docs/official.html)
 
     ## Available Attributes (inherited from GeocodingCandidate):
-    
+
     +   .count (CountObject) - pagination details on numbers of officials returned
     +   .match_addr (string) - candidate address that the geocoder was able to match
     +   .wkid (integer) - for Well Known ID, the EPSG code (spatial reference system)
@@ -790,11 +805,11 @@ class OfficialGeocodingCandidate(GeocodingCandidate):
     +   .geoservice (string) - Geocoding service provider used
 
     ## Available Attributes (specific to DistrictGeocodingCandidate):
-        
+
     +   .officials (list of OfficialObjects) - OfficialObjects for this candidate
 
     ## Available Method:
-        
+
     +   .who_are_the_officials():
             generates and returns a list of officials in this response and their
             last_name, name_formal of their chamber, district_type of their district,
@@ -810,10 +825,10 @@ class OfficialGeocodingCandidate(GeocodingCandidate):
 
     def __init__(self, official_geocoding_candidate_dict):
         super(OfficialGeocodingCandidate, self).__init__(
-                                            official_geocoding_candidate_dict)
-        
+            official_geocoding_candidate_dict)
+
         self.officials = [OfficialObject(o) for o in
-                            official_geocoding_candidate_dict['officials']]
+                          official_geocoding_candidate_dict['officials']]
 
     #convenience "simplified view" function
     def who_are_the_officials(self):
@@ -821,30 +836,31 @@ class OfficialGeocodingCandidate(GeocodingCandidate):
         for official in self.officials:
 
             officials_list.append([official.last_name,
-                                    official.office.chamber.name_formal,
-                                    official.office.district.district_type,
-                                    official.office.district.district_id,
-                                    official.party])
+                                   official.office.chamber.name_formal,
+                                   official.office.district.district_type,
+                                   official.office.district.district_id,
+                                   official.party])
 
         return officials_list
+
 
 class ElectionEventGeocodingCandidate(GeocodingCandidate):
     """
     # ElectionEventGeocodingCandidate
-    
+
     The ElectionEventGeocodingCandidate class defines base fields
     for describing a geocoded address candidate, and an .election_events attribute
     containing the main list of ElectionEventObjects.
     ElectionEventGeocodingCandidates are only returned in
     /election_event calls using geocoding.
-    
+
     # IMPORTANT NOTE - Alpha features be knocking at your door!
-    
+
     Geocoding with election events is best described as an "alpha" feature
     of the Cicero API, currently (as of Oct 8 2013). Consider this in the context
     of election events and the /election_event endpoint as a whole being
     a "beta" feature - you have been warned!
-    
+
     However, unlike non-geocoding /election_event calls, which are "free" (ie,
     don't use up any API credits) due to their "beta" status, *calls to the
     /election_event endpoint which do take advantage of [location or geocoding
@@ -866,12 +882,12 @@ class ElectionEventGeocodingCandidate(GeocodingCandidate):
     would not be returned with geocoding. Likewise, gubernatorial elections
     for other states than Alaska would not be returned, and if the geocoded address
     was in Fairbanks, then Anchorage municipal elections would not be returned.
-    
+
     # KNOWN ISSUES/BUGS:
-    
+
     Note these issues apply only to geocoding with election_events, not
     necessarily non-geocoded /election_event calls.
-    
+
     +   *Unpredictable repetition:* in the list of election_event objects returned
             in API responses using geocoding, all or some objects will be duplicates
             of other objects (in other words, election_event objects are repeated).
@@ -895,7 +911,7 @@ class ElectionEventGeocodingCandidate(GeocodingCandidate):
         [for election events](https://cicero.azavea.com/docs/election_event.html)
 
     ## Available Attributes (inherited from GeocodingCandidate):
-    
+
     +   .count (CountObject) - pagination details on numbers of officials returned
     +   .match_addr (string) - candidate address that the geocoder was able to match
     +   .wkid (integer) - for Well Known ID, the EPSG code (spatial reference system)
@@ -919,33 +935,35 @@ class ElectionEventGeocodingCandidate(GeocodingCandidate):
 
     def __init__(self, election_event_geocoding_candidate_dict):
         super(ElectionEventGeocodingCandidate, self).__init__(
-                                        election_event_geocoding_candidate_dict)
-        
-        self.election_events = [ElectionEventObject(e) for e in
+            election_event_geocoding_candidate_dict)
+
+        self.election_events = [
+            ElectionEventObject(e) for e in
             election_event_geocoding_candidate_dict['election_events']]
+
 
 class ElectionEventNonGeocodingResultsObject(AbstractCiceroObject):
     """
     # ElectionEventNonGeocodingResultsObject
-    
+
     The ElectionEventNonGeocodingResultsObject class is a container for a list
     of returned ElectionEventObjects and a CountObject enumerating how many and
     which have been returned in this response.
     ElectionEventNonGeocodingResultsObjects are only returned in
-    /election_event calls that do NOT use geocoding. 
-    
+    /election_event calls that do NOT use geocoding.
+
     Please review the issues outlined in the docstring of the
     ElectionEventGeocodingCandidate class. Non-geocoding /election_event calls
     are somewhat more robust than geocoding calls, but are still a "beta"
     feature. Unlike /election_event call that do use geocoding, however,
     non-geocoding calls will not charge an API credit for the time being.
     (as of Oct 9 2013)
-    
+
 
     [Cicero documentation](https://cicero.azavea.com/docs/election_event.html)
 
     ## Available Attributes:
-        
+
     +   .count (CountObject)
     +   .election_events (list of ElectionEventObjects)
 
@@ -953,19 +971,21 @@ class ElectionEventNonGeocodingResultsObject(AbstractCiceroObject):
     +   response
         +   results (an ElectionEventNonGeocodingResultsObject)
     """
-    
+
     def __init__(self, election_event_nongeocoding_results_dict):
         if 'count' in election_event_nongeocoding_results_dict:
             self.count = CountObject(
-                            election_event_nongeocoding_results_dict['count'])
+                election_event_nongeocoding_results_dict['count'])
 
-        self.election_events = [ElectionEventObject(e) for e in
-                    election_event_nongeocoding_results_dict['election_events']]
+        self.election_events = [
+            ElectionEventObject(e) for e in
+            election_event_nongeocoding_results_dict['election_events']]
+
 
 class DistrictNonGeocodingResultsObject(AbstractCiceroObject):
     """
     # DistrictNonGeocodingResultsObject
-    
+
     The s class is a container for a list of
     returned DistrictObjects and a CountObject enumerating how many and which
     have been returned in this response.
@@ -976,7 +996,7 @@ class DistrictNonGeocodingResultsObject(AbstractCiceroObject):
     [Cicero documentation](https://cicero.azavea.com/docs/election_event.html)
 
     ## Available Attributes:
-        
+
     +   .count (CountObject)
     +   .districts (list of DistrictObjects)
 
@@ -989,13 +1009,15 @@ class DistrictNonGeocodingResultsObject(AbstractCiceroObject):
         if 'count' in district_nongeocoding_results_dict:
             self.count = CountObject(district_nongeocoding_results_dict['count'])
 
-        self.districts = [DistrictObject(d) for d in
-                        district_nongeocoding_results_dict['districts']]
+        self.districts = [
+            DistrictObject(d) for d in
+            district_nongeocoding_results_dict['districts']]
+
 
 class OfficialNonGeocodingResultsObject(AbstractCiceroObject):
     """
     # OfficialNonGeocodingResultsObject
-    
+
     The OfficialNonGeocodingResultsObject class is a container for a list of
     returned OfficialObjects and a CountObject enumerating how many and which
     have been returned in this response.
@@ -1005,12 +1027,12 @@ class OfficialNonGeocodingResultsObject(AbstractCiceroObject):
     [Cicero documentation](https://cicero.azavea.com/docs/election_event.html)
 
     ## Available Attributes:
-    
+
     +   .count (CountObject)
     +   .officials (list of OfficialObjects)
 
     ## Available Method:
-    
+
     +   .who_are_the_officials():
         generates and returns a list of officials in this response and their
         last_name, name_formal of their chamber, district_type of their district,
@@ -1028,30 +1050,30 @@ class OfficialNonGeocodingResultsObject(AbstractCiceroObject):
             self.count = CountObject(official_nongeocoding_results_dict['count'])
 
         self.officials = [OfficialObject(o) for o in
-                            official_nongeocoding_results_dict['officials']]
+                          official_nongeocoding_results_dict['officials']]
 
     #convenience "simplified view" function
     def who_are_the_officials(self):
         officials_list = []
         for official in self.officials:
-
             officials_list.append([official.last_name,
-                                      official.office.chamber.name_formal,
-                                      official.office.district.district_type,
-                                      official.party])
+                                   official.office.chamber.name_formal,
+                                   official.office.district.district_type,
+                                   official.party])
 
         return officials_list
+
 
 class GeocodingResultsObject(AbstractCiceroObject):
     """
     # GeocodingResultsObject
-    
+
     The GeocodingResultsObject class defines a "geocoding candidates" list of
     either OfficialGeocodingCandidate, DistrictGeocodingCandidate, or
     ElectionEventGeocodingCandidate objects, depending on the type of response.
 
     ## Available Attributes:
-    
+
     +   .candidates (list) - list of appropriate candidate objects
 
     ### Geocoded response structure:
@@ -1074,10 +1096,11 @@ class GeocodingResultsObject(AbstractCiceroObject):
                 #but if needed, this is the base candidate
                 self.candidates.append(GeocodingCandidate(candidate))
 
+
 class ExtentObject(AbstractCiceroObject):
     """
     # ExtentObject
-    
+
     Always nested within a MapObject, the ExtentObject class represents
     the details necessary to construct the geographic bounding box containing
     the returned map. By default these coordinates are in the Web Mercator
@@ -1086,7 +1109,7 @@ class ExtentObject(AbstractCiceroObject):
     [Cicero documentation](https://cicero.azavea.com/docs/map.html)
 
     ## Available Attributes:
-    
+
     +   .x_min (float) - minimum x coordinate (longitude)
     +   .y_min (float) - minimum y coordinate (latitude)
     +   .x_max (float) - maximum x coordinate (longitude)
@@ -1100,21 +1123,23 @@ class ExtentObject(AbstractCiceroObject):
                 +   extent
     """
 
-    def __init__(self, extent_dict): #TODO unify "_dict" and "_object" parameter names - decide on one
+    # TODO unify "_dict" and "_object" parameter names - decide on one
+    def __init__(self, extent_dict):
         _copy_keys(self.__dict__, extent_dict,
-                    ('x_min', 'y_min', 'x_max', 'y_max', 'srid'))
+                   ('x_min', 'y_min', 'x_max', 'y_max', 'srid'))
+
 
 class MapObject(AbstractCiceroObject):
     """
     # MapObject
-    
+
     The MapObject class contains attributes to construct or access a returned
     map from the /map call.
 
     [Cicero documentation](https://cicero.azavea.com/docs/map.html)
 
     ## Available Attributes:
-        
+
     +   .url (string) - url to Azavea-hosted map image, deleted after a few days
     +   .img_src (string) - when requested through a URL parameter, contains long
             base64 image data string of the map returned
@@ -1134,16 +1159,17 @@ class MapObject(AbstractCiceroObject):
 
         self.extent = ExtentObject(map_dict['extent'])
 
+
 class MapsResultsObject(AbstractCiceroObject):
     """
     # MapResultsObject
-    
+
     The MapResultsObject class is a container for a list of MapObjects.
 
     (Cicero documentation)[https://cicero.azavea.com/docs/map.html]
 
     ## Available Attributes:
-    
+
     +   .maps (list of MapObjects)
 
     ### Nongeocoded response structure:
@@ -1154,19 +1180,20 @@ class MapsResultsObject(AbstractCiceroObject):
 
     def __init__(self, map_result_dict):
         self.maps = [MapObject(m) for m in
-                        map_result_dict['maps']]
+                     map_result_dict['maps']]
+
 
 class DistrictTypeObject(AbstractCiceroObject):
     """
     # DistrictTypeObject
-    
+
     The DistrictTypeObject is returned from the /district_type call,
     and contains information about each district_type available in Cicero.
 
     (Cicero documentation)[https://cicero.azavea.com/docs/district_type.html]
 
     ## Available Attributes:
-    
+
     +   .name_short (string) - name_short of this district type, ie CENSUS,
             NATIONAL_LOWER, etc
     +   .notes (string)
@@ -1182,20 +1209,21 @@ class DistrictTypeObject(AbstractCiceroObject):
 
     def __init__(self, district_type_dict):
         _copy_keys(self.__dict__, district_type_dict,
-                    ('name_short', 'notes', 'acknowledgements',
+                   ('name_short', 'notes', 'acknowledgements',
                     'is_legislative', 'name_long'))
+
 
 class DistrictTypeResultsObject(AbstractCiceroObject):
     """
     # DistrictTypeResultsObject
-    
+
     The DistrictTypeResultsObject is a container for a list of
     DistrictTypeObjects.
 
     [Cicero documentation](https://cicero.azavea.com/docs/district_type.html)
 
     ## Available Attributes:
-    
+
     +   .district_types (list of DistrictTypeObjects)
 
     ### Nongeocoded response structure:
@@ -1206,19 +1234,20 @@ class DistrictTypeResultsObject(AbstractCiceroObject):
 
     def __init__(self, district_type_result_dict):
         self.district_types = [DistrictTypeObject(dt) for dt in
-                            district_type_result_dict['district_types']]
+                               district_type_result_dict['district_types']]
+
 
 class CreditBatchObject(AbstractCiceroObject):
     """
     # CreditBatchObject
-    
+
     The CreditBatchObject is returned from the /account/credits_remaining call,
     and contains information about each batch of credits a user has.
 
     [Cicero documentation](https://cicero.azavea.com/docs/credits_remaining.html)
 
     ## Available Attributes:
-    
+
     +   .discount (string) - discount given for this credit batch
     +   .cost (string) - cost of this credit batch
     +   .created (string) - datetime this credit batch was created
@@ -1235,13 +1264,14 @@ class CreditBatchObject(AbstractCiceroObject):
 
     def __init__(self, credit_batch_dict):
         _copy_keys(self.__dict__, credit_batch_dict,
-                    ('discount', 'expiration_time', 'cost', 'credits_remaining',
+                   ('discount', 'expiration_time', 'cost', 'credits_remaining',
                     'credits_purchased'))
+
 
 class AccountCreditsRemainingResultsObject(AbstractCiceroObject):
     """
     # AccountCreditsRemainingResultsObject
-    
+
     The AccountCreditsRemainingResultsObject is returned from the
     /account/credits_remaining call, and contains information about a user's
     balance and overdraft limit, as well as a list of available credit batches.
@@ -1249,7 +1279,7 @@ class AccountCreditsRemainingResultsObject(AbstractCiceroObject):
     (Cicero documentation)[https://cicero.azavea.com/docs/credits_remaining.html]
 
     ## Available Attributes:
-    
+
     +   .credit_balance (integer) - how many API credits does this user have to
             spend?
     +   .usable_batches (list of CreditBatchObjects)
@@ -1264,22 +1294,23 @@ class AccountCreditsRemainingResultsObject(AbstractCiceroObject):
 
     def __init__(self, credits_remaining_result_dict):
         _copy_keys(self.__dict__, credits_remaining_result_dict,
-                    ('credit_balance', 'overdraft_limit'))
+                   ('credit_balance', 'overdraft_limit'))
 
         self.usable_batches = [CreditBatchObject(batch) for batch in
-                        credits_remaining_result_dict['usable_batches']]
+                               credits_remaining_result_dict['usable_batches']]
+
 
 class ActivityTypeObject(AbstractCiceroObject):
     """
     # ActivityTypeObject
-    
+
     The ActivityTypeObject is returned from the /account/usage call,
     and contains information about how a user has been using their API credits.
 
     [Cicero documentation](https://cicero.azavea.com/docs/usage.html)
 
     ## Available Attributes:
-    
+
     +   .count (string) - how many times has this API endpoint been called?
     +   .type (string) - which API endpoint, or "activity", is this?
     +   .credits_used (string) - how many credits have been spent on this activity?
@@ -1292,12 +1323,13 @@ class ActivityTypeObject(AbstractCiceroObject):
 
     def __init__(self, activity_dict):
         _copy_keys(self.__dict__, activity_dict,
-                    ('count', 'type', 'credits_used'))
+                   ('count', 'type', 'credits_used'))
+
 
 class AccountUsageObject(AbstractCiceroObject):
     """
     # AccountUsageObject
-    
+
     The AccountUsageObject is returned from the /account/usage call,
     and contains information about how many API calls and credits a user
     has made in a given month.
@@ -1305,7 +1337,7 @@ class AccountUsageObject(AbstractCiceroObject):
     (Cicero documentation)[https://cicero.azavea.com/docs/usage.html]
 
     ## Available Attributes:
-    
+
     +   .year (integer) - what year is this AccountUsageObject documenting?
     +   .month (integer) - what month is this object documenting?
     +   .credits_used (integer) - how many credits were used in this month?
@@ -1318,22 +1350,23 @@ class AccountUsageObject(AbstractCiceroObject):
 
     def __init__(self, monthly_account_usage_dict):
         _copy_keys(self.__dict__, monthly_account_usage_dict,
-                    ('count', 'credits_used', 'year', 'month'))
-        
+                   ('count', 'credits_used', 'year', 'month'))
+
         self.activity_types = [ActivityTypeObject(a) for a in
-                            monthly_account_usage_dict['activity_types']]
+                               monthly_account_usage_dict['activity_types']]
+
 
 class VersionObject(AbstractCiceroObject):
     """
     # VersionObject
-    
+
     The VersionObject is returned from the /version call,
     and contains the version number of the Cicero API currently being used.
 
     [Cicero documentation](https://cicero.azavea.com/docs/version.html)
 
     ## Available Attributes:
-    
+
     +   .version (string) - what Cicero API version is currently being used?
 
     ### Nongeocoded response structure:
@@ -1345,15 +1378,16 @@ class VersionObject(AbstractCiceroObject):
     def __init__(self, version_dict):
         self.version = version_dict['version']
 
+
 class ResponseObject(AbstractCiceroObject):
     """
     # ResponseObject
-    
+
     The base ResponseObject is returned from every API call,
     and contains errors, messages, and the results of the API call.
 
     ## Available Attributes:
-    
+
     +   .errors (list of strings) - Errors this API call may have triggered.
     +   .messages (list of strings) - General Messages for users of the Cicero API.
     +   .results (appropriate ResultsObject) - The main results data returned
@@ -1370,7 +1404,7 @@ class ResponseObject(AbstractCiceroObject):
         self.messages = response_dict['messages']
 
         r = response_dict['results']
-        
+
         if 'candidates' in r:
             self.results = GeocodingResultsObject(r)
         elif 'officials' in r:
@@ -1389,15 +1423,16 @@ class ResponseObject(AbstractCiceroObject):
             self.results = [AccountUsageObject(month) for month in r]
         elif 'version' in r:
             self.results = VersionObject(r)
-        
+
         #the base case, though in normal operation we shouldn't get here
         else:
             self.results = r
 
+
 class RootCiceroObject(AbstractCiceroObject):
     """
     # RootCiceroObject
-    
+
     The base RootCiceroObject is returned from every API call,
     and contains the ResponseObject.
 
