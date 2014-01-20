@@ -31,7 +31,7 @@ class CiceroRestABC(object):
     This is an Abstract Base Class for the CiceroRestConnection class. Methods
     in CiceroRestConnection for the various API endpoints use the
     _compose_request_url() and _submit_request() methods defined here to perform
-    the mechanics of composing a Cicero API url, requesting it, and receiving
+    the mechanics of composing a Cicero API url, requesting it, and parsing
     a JSON response.
     """
 
@@ -62,6 +62,20 @@ class CiceroRestABC(object):
         request_url += query_params
 
         return request_url
+    
+    def json_to_cicero_object(self, json_response):
+        """
+        # json_to_cicero_object()
+        
+        Used in _submit_request() below, this method simply takes JSON from
+        the Cicero API and puts it in a RootCiceroObject, which parses it out
+        into the other classes defined in cicero_response_classes.py.
+        
+        If you would prefer to do your own parsing or processing of responses
+        from the Cicero API, make your own subclass of CiceroRestConnection
+        and override this function.
+        """
+        return RootCiceroObject(json_response)
 
     def _submit_request(self, request_url):
         """
@@ -89,7 +103,7 @@ class CiceroRestABC(object):
             response = urllib2.urlopen(request)
             blob = response.read()
             json_dict = json.loads(blob)
-            return RootCiceroObject(json_dict)
+            return self.json_to_cicero_object(json_dict)
         except urllib2.HTTPError as e:
             error_blob = e.read()
             error_dict = json.loads(error_blob)
@@ -108,7 +122,6 @@ class CiceroRestABC(object):
         """
         url = self._compose_request_url(endpoint, args)
         return self._submit_request(url)
-
 
 class CiceroRestConnection(CiceroRestABC):
     """
