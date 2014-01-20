@@ -220,12 +220,12 @@ class CiceroRestConnection(CiceroRestABC):
             token_json = json.loads(token_response)
             self.user_id = token_json['user']
             self.token = token_json['token']
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             token_error_blob = e.read()
             token_error_dict = json.loads(token_error_blob)
             token_error_dict['status_code'] = e.code
             raise CiceroError(token_error_dict)
-        except urllib2.URLError, e:
+        except urllib2.URLError as e:
             raise NetworkError(_NETWORK_ERROR, e.reason)
 
     def _response_from_endpoint(self, endpoint, args):
