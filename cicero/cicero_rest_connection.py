@@ -97,6 +97,17 @@ class CiceroRestABC(object):
             raise CiceroError(error_dict)
         except urllib2.URLError as e:
             raise NetworkError(_NETWORK_ERROR, e.reason)
+        
+    def _response_from_endpoint(self, endpoint, args):
+        """
+        # _response_from_endpoint()
+        
+        Uses the previous two functions (_compose_request_url() and
+        _submit_request()) to compose a url for Cicero, request it, and
+        return the API response.
+        """
+        url = self._compose_request_url(endpoint, args)
+        return self._submit_request(url)
 
 
 class CiceroRestConnection(CiceroRestABC):
@@ -227,10 +238,6 @@ class CiceroRestConnection(CiceroRestABC):
             raise CiceroError(token_error_dict)
         except urllib2.URLError as e:
             raise NetworkError(_NETWORK_ERROR, e.reason)
-
-    def _response_from_endpoint(self, endpoint, args):
-        url = self._compose_request_url(endpoint, args)
-        return self._submit_request(url)
 
     def get_election_event(self, **kwargs):
         """
