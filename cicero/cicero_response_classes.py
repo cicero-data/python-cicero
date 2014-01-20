@@ -89,6 +89,7 @@ class IdentifierObject(AbstractCiceroObject):
     """
     
     def __init__(self, identifier_dict):
+        super(IdentifierObject, self).__init__()
         _copy_keys(self.__dict__, identifier_dict,
                    ('valid_from', 'valid_to', 'sk', 'id', 'official',
                     'last_update_date', 'identifier_type', 'identifier_value'))
@@ -127,6 +128,7 @@ class CommitteeObject(AbstractCiceroObject):
     """
     
     def __init__(self, comm_dict):
+        super(CommitteeObject, self).__init__()
         _copy_keys(self.__dict__, comm_dict,
                    ('valid_from', 'description', 'valid_to', 'sk',
                     'last_update_date', 'id'))
@@ -209,6 +211,7 @@ class CountryObject(AbstractCiceroObject):
     """
     
     def __init__(self, country_dict):
+        super(CountryObject, self).__init__()
         _copy_keys(self.__dict__, country_dict,
                     ('status', 'name_short', 'gmi_3', 'valid_from',
                     'name_short_iso', 'name_short_local', 'valid_to', 'id',
@@ -264,6 +267,7 @@ class GovernmentObject(AbstractCiceroObject):
     """
     
     def __init__(self, gov_dict):
+        super(GovernmentObject, self).__init__()
         _copy_keys(self.__dict__, gov_dict,
                     ('city', 'state', 'name', 'notes', 'type'))
         
@@ -332,6 +336,7 @@ class ChamberObject(AbstractCiceroObject):
     """
     
     def __init__(self, chamber_dict):
+        super(ChamberObject, self).__init__()
         _copy_keys(self.__dict__, chamber_dict,
                     ('id', 'type', 'official_count', 'is_chamber_complete',
                     'has_geographic_representation', 'name_native_language', 
@@ -386,6 +391,7 @@ class ElectionEventObject(AbstractCiceroObject):
     """
     
     def __init__(self, election_event_dict):
+        super(ElectionEventObject, self).__init__()
         _copy_keys(self.__dict__, election_event_dict,
                     ('is_approximate', 'last_update_date', 'remarks',
                     'election_date_text', 'valid_from', 'is_national',
@@ -456,6 +462,7 @@ class DistrictObject(AbstractCiceroObject):
     """
     
     def __init__(self, district_dict):
+        super(DistrictObject, self).__init__()
         _copy_keys(self.__dict__, district_dict,
                     ('district_type', 'city', 'valid_from', 'country',
                     'district_id', 'valid_to', 'label', 'sk', 'subtype',
@@ -501,6 +508,7 @@ class OfficeObject(AbstractCiceroObject):
     """
     
     def __init__(self, office_dict):
+        super(OfficeObject, self).__init__()
         _copy_keys(self.__dict__, office_dict,
                     ('valid_from', 'representing_state', 'notes', 'title',
                     'valid_to', 'sk', 'last_update_date', 'election_rules',
@@ -562,6 +570,7 @@ class AddressObject(AbstractCiceroObject):
     """
     
     def __init__(self, address_dict):
+        super(AddressObject, self).__init__()
         _copy_keys(self.__dict__, address_dict,
                     ('county', 'postal_code', 'phone_1', 'phone_2', 'fax_1',
                     'fax_2', 'city', 'state', 'address_1', 'address_2',
@@ -645,6 +654,7 @@ class OfficialObject(AbstractCiceroObject):
     """
     
     def __init__(self, official_dict):
+        super(OfficialObject, self).__init__()
         _copy_keys(self.__dict__, official_dict,
                     ('last_name', 'initial_term_start_date',
                     'current_term_start_date', 'web_form_url',
@@ -698,6 +708,7 @@ class CountObject(AbstractCiceroObject):
     """
     
     def __init__(self, count_dict):
+        super(CountObject, self).__init__()
         _copy_keys(self.__dict__, count_dict,
                     ('to','total'))
         self.from_ = count_dict['from'] #get around "from" being reserve word
@@ -714,6 +725,7 @@ class GeocodingCandidate(AbstractCiceroObject):
     """
     
     def __init__(self, geocoding_candidate_dict):
+        super(GeocodingCandidate, self).__init__()
         _copy_keys(self.__dict__, geocoding_candidate_dict,
                     ('match_addr', 'wkid', 'locator', 'score', 'locator_type',
                     'y', 'x', 'geoservice'))
@@ -959,6 +971,7 @@ class ElectionEventNonGeocodingResultsObject(AbstractCiceroObject):
     """
     
     def __init__(self, election_event_nongeocoding_results_dict):
+        super(ElectionEventNonGeocodingResultsObject, self).__init__()
         if 'count' in election_event_nongeocoding_results_dict:
             self.count = CountObject(
                             election_event_nongeocoding_results_dict['count'])
@@ -990,6 +1003,7 @@ class DistrictNonGeocodingResultsObject(AbstractCiceroObject):
     """
 
     def __init__(self, district_nongeocoding_results_dict):
+        super(DistrictNonGeocodingResultsObject, self).__init__()
         if 'count' in district_nongeocoding_results_dict:
             self.count = CountObject(
                                 district_nongeocoding_results_dict['count'])
@@ -1029,6 +1043,7 @@ class OfficialNonGeocodingResultsObject(AbstractCiceroObject):
     """
 
     def __init__(self, official_nongeocoding_results_dict):
+        super(OfficialNonGeocodingResultsObject, self).__init__()
         if 'count' in official_nongeocoding_results_dict:
             self.count = CountObject(
                                 official_nongeocoding_results_dict['count'])
@@ -1067,6 +1082,7 @@ class GeocodingResultsObject(AbstractCiceroObject):
     """
 
     def __init__(self, geocoding_results_dict):
+        super(GeocodingResultsObject, self).__init__()
         self.candidates = []
         for candidate in geocoding_results_dict['candidates']:
             if 'officials' in candidate:
@@ -1108,6 +1124,7 @@ class ExtentObject(AbstractCiceroObject):
     """
 
     def __init__(self, extent_dict): #TODO unify "_dict" and "_object" parameter names - decide on one
+        super(ExtentObject, self).__init__()
         _copy_keys(self.__dict__, extent_dict,
                     ('x_min', 'y_min', 'x_max', 'y_max', 'srid'))
 
@@ -1134,6 +1151,7 @@ class MapObject(AbstractCiceroObject):
     """
 
     def __init__(self, map_dict):
+        super(MapObject, self).__init__()
         self.url = map_dict['url']
 
         if 'img_src' in map_dict:
@@ -1160,6 +1178,7 @@ class MapsResultsObject(AbstractCiceroObject):
     """
 
     def __init__(self, map_result_dict):
+        super(MapResultsObject, self).__init__()
         self.maps = [MapObject(m) for m in
                         map_result_dict['maps']]
 
@@ -1188,6 +1207,7 @@ class DistrictTypeObject(AbstractCiceroObject):
     """
 
     def __init__(self, district_type_dict):
+        super(DistrictTypeObject, self).__init__()
         _copy_keys(self.__dict__, district_type_dict,
                     ('name_short', 'notes', 'acknowledgements',
                     'is_legislative', 'name_long'))
@@ -1212,6 +1232,7 @@ class DistrictTypeResultsObject(AbstractCiceroObject):
     """
 
     def __init__(self, district_type_result_dict):
+        super(DistrictTypeResultsObject, self).__init__()
         self.district_types = [DistrictTypeObject(dt) for dt in
                             district_type_result_dict['district_types']]
 
@@ -1241,6 +1262,7 @@ class CreditBatchObject(AbstractCiceroObject):
     """
 
     def __init__(self, credit_batch_dict):
+        super(CreditBatchObject, self).__init__()
         _copy_keys(self.__dict__, credit_batch_dict,
                     ('discount', 'expiration_time', 'cost', 'credits_remaining',
                     'credits_purchased'))
@@ -1270,6 +1292,7 @@ class AccountCreditsRemainingResultsObject(AbstractCiceroObject):
     """
 
     def __init__(self, credits_remaining_result_dict):
+        super(AccountCreditsRemainingResultsObject, self).__init__()
         _copy_keys(self.__dict__, credits_remaining_result_dict,
                     ('credit_balance', 'overdraft_limit'))
 
@@ -1298,6 +1321,7 @@ class ActivityTypeObject(AbstractCiceroObject):
     """
 
     def __init__(self, activity_dict):
+        super(ActivityTypeObject, self).__init__()
         _copy_keys(self.__dict__, activity_dict,
                     ('count', 'type', 'credits_used'))
 
@@ -1324,6 +1348,7 @@ class AccountUsageObject(AbstractCiceroObject):
     """
 
     def __init__(self, monthly_account_usage_dict):
+        super(AccountUsageObject, self).__init__()
         _copy_keys(self.__dict__, monthly_account_usage_dict,
                     ('count', 'credits_used', 'year', 'month'))
         
@@ -1350,6 +1375,7 @@ class VersionObject(AbstractCiceroObject):
     """
 
     def __init__(self, version_dict):
+        super(VersionObject, self).__init__()
         self.version = version_dict['version']
 
 class ResponseObject(AbstractCiceroObject):
@@ -1373,6 +1399,7 @@ class ResponseObject(AbstractCiceroObject):
     """
 
     def __init__(self, response_dict):
+        super(ResponseObject, self).__init__()
         self.errors = response_dict['errors']
         self.messages = response_dict['messages']
 
@@ -1416,4 +1443,5 @@ class RootCiceroObject(AbstractCiceroObject):
     """
 
     def __init__(self, python_dict_from_cicero_json):
+        super(RootCiceroObject, self).__init__()
         self.response = ResponseObject(python_dict_from_cicero_json['response'])
