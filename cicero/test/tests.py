@@ -25,16 +25,13 @@ class CiceroInternationalGeocodingLegislativeDistrictTests(CiceroBaseTest):
 
     def test_district_object(self):
         self.assertIsInstance(
-            self.blob.response.results.candidates[0].districts[0],
-            DistrictObject)
+            self.blob.response.results.candidates[0].districts[0], DistrictObject)
 
     def test_candidate_count_object(self):
         self.assertIsInstance(self.blob.response.results.candidates[0].count, CountObject)
 
     def test_district_geocoding_candidate(self):
-        self.assertIsInstance(
-            self.blob.response.results.candidates[0],
-            DistrictGeocodingCandidate)
+        self.assertIsInstance(self.blob.response.results.candidates[0], DistrictGeocodingCandidate)
 
 class CiceroEmptyInternationalGeocodingLegislativeDistrictTests(CiceroBaseTest):
 
@@ -110,9 +107,9 @@ class CiceroDomesticNongeocodingOfficialTests(CiceroBaseTest):
         if "STATE_LOWER" in officialOne.office.district.values():
             self.assertEqual(officialOne.office.district.district_type, "STATE_LOWER")
             self.assertEqual(officialTwo.office.district.district_type, "STATE_UPPER")
-	elif "STATE_LOWER" in officialTwo.office.district.values():
-	    self.assertEqual(officialTwo.office.district.district_type, "STATE_LOWER")
-	    self.assertEqual(officialOne.office.district.district_type, "STATE_UPPER")
+        elif "STATE_LOWER" in officialTwo.office.district.values():
+            self.assertEqual(officialTwo.office.district.district_type, "STATE_LOWER")
+            self.assertEqual(officialOne.office.district.district_type, "STATE_UPPER")
         else:
             self.fail(msg="STATE_LOWER district_type not present when it had been requested")
 
@@ -123,26 +120,26 @@ class CiceroDomesticGeocodingOfficialTests(CiceroBaseTest):
         self.blob = self.cicero.get_official(
             search_loc="1001 Northern Lights Blvd Anchorage AK",
             district_type=("STATE_LOWER", "STATE_UPPER"))
-        candOneOfficialOne = self.blob.response.results.candidates[0].officials[0]
-        candOneOfficialTwo = self.blob.response.results.candidates[0].officials[1]
-	candTwoOfficialOne = self.blob.response.results.candidates[1].officials[0]
-	candTwoOfficialTwo = self.blob.response.results.candidates[1].officials[1]
+        cand_one_official_one = self.blob.response.results.candidates[0].officials[0]
+        cand_one_official_two = self.blob.response.results.candidates[0].officials[1]
+        cand_two_official_one = self.blob.response.results.candidates[1].officials[0]
+        cand_two_official_two = self.blob.response.results.candidates[1].officials[1]
 
-        if "STATE_LOWER" in candOneOfficialOne.office.district.values():
-            self.assertEqual(candOneOfficialOne.office.district.district_type, "STATE_LOWER")
-            self.assertEqual(candOneOfficialTwo.office.district.district_type, "STATE_UPPER")
-        elif "STATE_LOWER" in candOneOfficialTwo.office.district.values():
-            self.assertEqual(candOneOfficialTwo.office.district.district_type, "STATE_LOWER")
-            self.assertEqual(candOneOfficialOne.office.district.district_type, "STATE_UPPER")
+        if "STATE_LOWER" in cand_one_official_one.office.district.values():
+            self.assertEqual(cand_one_official_one.office.district.district_type, "STATE_LOWER")
+            self.assertEqual(cand_one_official_two.office.district.district_type, "STATE_UPPER")
+        elif "STATE_LOWER" in cand_one_official_two.office.district.values():
+            self.assertEqual(cand_one_official_two.office.district.district_type, "STATE_LOWER")
+            self.assertEqual(cand_one_official_one.office.district.district_type, "STATE_UPPER")
         else:
             self.fail(msg="STATE_LOWER district_type not present in first candidate when it had been requested")	
 
-	if "STATE_LOWER" in candTwoOfficialOne.office.district.values():
-            self.assertEqual(candTwoOfficialOne.office.district.district_type, "STATE_LOWER")
-            self.assertEqual(candTwoOfficialTwo.office.district.district_type, "STATE_UPPER")
-        elif "STATE_LOWER" in candTwoOfficialTwo.office.district.values():
-            self.assertEqual(candTwoOfficialTwo.office.district.district_type, "STATE_LOWER")
-            self.assertEqual(candTwoOfficialOne.office.district.district_type, "STATE_UPPER")
+        if "STATE_LOWER" in cand_two_official_one.office.district.values():
+            self.assertEqual(cand_two_official_one.office.district.district_type, "STATE_LOWER")
+            self.assertEqual(cand_two_official_two.office.district.district_type, "STATE_UPPER")
+        elif "STATE_LOWER" in cand_two_official_two.office.district.values():
+            self.assertEqual(cand_two_official_two.office.district.district_type, "STATE_LOWER")
+            self.assertEqual(cand_two_official_one.office.district.district_type, "STATE_UPPER")
         else:
             self.fail(msg="STATE_LOWER district_type not present in second candidate when it had been requested")
 
