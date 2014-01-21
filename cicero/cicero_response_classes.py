@@ -1419,8 +1419,8 @@ class ResponseObject(AbstractCiceroObject):
             self.results = DistrictTypeResultsObject(r)
         elif 'credit_balance' in r:
             self.results = AccountCreditsRemainingResultsObject(r)
-	elif 'version' in r:
-	    self.results = VersionObject(r)
+        elif 'version' in r:
+            self.results = VersionObject(r)
         elif isinstance(r, list) and 'activity_types' in r[0]:
             self.results = [AccountUsageObject(month) for month in r]
 
