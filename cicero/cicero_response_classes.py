@@ -67,8 +67,6 @@ class IdentifierObject(AbstractCiceroObject):
     +   .id (integer)        - Cicero unique ID of this identifier
     +   .identifier_value (string) - username, account, or full or partial web URL
         for this external identifier
-    +   .__dict__ (dictionary) - As with any Python class, this IdentiferObject
-        can be navigated by Python ['dictionary']['bracket']['notation']
 
     ### Geocoded response structure:
 
@@ -1123,7 +1121,6 @@ class ExtentObject(AbstractCiceroObject):
                 +   extent
     """
 
-    # TODO unify "_dict" and "_object" parameter names - decide on one
     def __init__(self, extent_dict):
         _copy_keys(self.__dict__, extent_dict,
                    ('x_min', 'y_min', 'x_max', 'y_max', 'srid'))
