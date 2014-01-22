@@ -1,2 +1,2 @@
-include *.txt
-recursive-include docs *.txt
+include CHANGES.txt LICENSE.txt README.rst cicero_examples.py
+recursive-include docs *
