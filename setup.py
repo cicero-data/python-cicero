@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages()
 
 setup(
     name='python-cicero',
@@ -7,7 +7,7 @@ setup(
     author_email='info@azavea.com',
     maintainer='Andrew Thompson',
     maintainer_email='athompson@azavea.com',
-    packages=['cicero'],
+    packages=find_packages(),
     url=['http://github.com/azavea/python-cicero'],
     license='LICENSE.txt',
     description='Python wrapper for Azavea\'s Cicero API',
