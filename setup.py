@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='PythonCicero',
+    name='python-cicero',
     version='0.1.0',
     author='Azavea',
     author_email='info@azavea.com',
