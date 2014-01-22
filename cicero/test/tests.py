@@ -1,12 +1,18 @@
 """
 This file contains all unit tests for the python-cicero API wrapper.
 """
-
+import os
 import unittest
 from cicero.cicero_rest_connection import *
 
-USERNAME = "example"  # enter your Cicero API username here
-PASSWORD = "example"  # enter your Cicero API password here
+USERNAME = ""  # if running tests directly, enter your Cicero API username here
+PASSWORD = ""  # if running tests directly, enter your Cicero API password here
+
+if not USERNAME and not PASSWORD:
+    # if tests are being executed from the shell script,
+    # grab the environment variables instead
+    USERNAME = os.getenv("CICERO_USERNAME")
+    PASSWORD = os.getenv("CICERO_PASSWORD")
 
 
 class CiceroBaseTest(unittest.TestCase):
