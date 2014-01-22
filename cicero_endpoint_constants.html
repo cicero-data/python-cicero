@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>cicero_endpoint_constants.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id="background"></div>
+<div id='container'>
+  <div class='section'>
+    <div class='docs'><h1>cicero_endpoint_constants.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>This file defines endpoints for the Cicero ReST API to be used with the
+python-cicero wrapper. All endpoints use HTTP GET, except for the
+TOKEN_ENDPOINT which uses HTTP POST.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <h3><span id="basics" href="basics"> Basics </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>The root for all queries</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">SITE_ROOT</span> <span class="o">=</span> <span class="s">&quot;https://cicero.azavea.com/&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>API Version number. If desired, change this to use
+a different API version
+<a href="https://cicero.azavea.com/docs/versioning.html">from those available</a>.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">VERSION</span> <span class="o">=</span> <span class="s">&quot;v3.1&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>All queries require both the root and a version number.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">_BASE</span> <span class="o">=</span> <span class="n">SITE_ROOT</span> <span class="o">+</span> <span class="n">VERSION</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <h3><span id="token-endpoint" href="token-endpoint"> Token endpoint </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>The Token endpoint is where to get a new authentication token from the
+API for your account, roughly every 24 hours. It is the only POST request
+in the API - POST your username or email, and password.
+<a href="https://cicero.azavea.com/docs/getting_started.html#authentication-using-user-id-and-token">API docs link</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">TOKEN_ENDPOINT</span> <span class="o">=</span> <span class="n">_BASE</span> <span class="o">+</span> <span class="s">&quot;token/new.json&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <h3><span id="main-api-data-query-endpoints" href="main-api-data-query-endpoints"> Main API data query endpoints </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>The official endpoint is used to query for information on elected officials.
+<a href="https://cicero.azavea.com/docs/official.html">API docs link</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">OFFICIAL_ENDPOINT</span> <span class="o">=</span> <span class="n">_BASE</span> <span class="o">+</span> <span class="s">&quot;official&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>The election event endpoint is currently a "beta" feature and used to
+query for information on past or future election events. Currently does not
+consume API credits when used.
+<a href="https://cicero.azavea.com/docs/election_event.html">API docs link</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">ELECTION_EVENT_ENDPOINT</span> <span class="o">=</span> <span class="n">_BASE</span> <span class="o">+</span> <span class="s">&quot;election_event&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>The legislative district endpoint is used to query for information
+on legislative districts.
+<a href="https://cicero.azavea.com/docs/district.html">API docs link</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">LEGISLATIVE_DISTRICT_ENDPOINT</span> <span class="o">=</span> <span class="n">_BASE</span> <span class="o">+</span> <span class="s">&quot;legislative_district&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>The nonlegislative district endpoint is used to query for information on
+nonlegislative districts (watershed, census, police, school, county, judicial).
+<a href="https://cicero.azavea.com/docs/district.html">API docs link</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">NONLEGISLATIVE_DISTRICT_ENDPOINT</span> <span class="o">=</span> <span class="n">_BASE</span> <span class="o">+</span> <span class="s">&quot;nonlegislative_district&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>The map endpoint is used to query for district map images.
+<a href="https://cicero.azavea.com/docs/map.html">API docs link</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">MAP_ENDPOINT</span> <span class="o">=</span> <span class="n">_BASE</span> <span class="o">+</span> <span class="s">&quot;map&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <h3><span id="informational-endpoints-(no-credits-required)" href="informational-endpoints-(no-credits-required)"> Informational endpoints (no credits required) </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p>The district type endpoint is used to get a list of possible district types
+to query for using the legislative and nonlegislative district endpoints.
+<a href="https://cicero.azavea.com/docs/map.html">API docs link</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">DISTRICT_TYPE_ENDPOINT</span> <span class="o">=</span> <span class="n">_BASE</span> <span class="o">+</span> <span class="s">&quot;district_type&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <p>The account/credits_remaining endpoint is used to get information on
+available batches of API credits under your account.
+<a href="https://cicero.azavea.com/docs/credits_remaining.html">API docs link</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">ACCOUNT_CREDITS_REMAINING_ENDPOINT</span> <span class="o">=</span> <span class="n">_BASE</span> <span class="o">+</span> <span class="s">&quot;account/credits_remaining&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p>The account/usage endpoint is used to get information on API credits used
+in a given amount of time.
+<a href="https://cicero.azavea.com/docs/usage.html">API docs link</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">ACCOUNT_USAGE_ENDPOINT</span> <span class="o">=</span> <span class="n">_BASE</span> <span class="o">+</span> <span class="s">&quot;account/usage&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      <p>The version endpoint can be queried to obtain the current API vesion
+being used.
+<a href="https://cicero.azavea.com/docs/version.html">API docs link</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">VERSION_ENDPOINT</span> <span class="o">=</span> <span class="n">_BASE</span> <span class="o">+</span> <span class="s">&quot;version&quot;</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
