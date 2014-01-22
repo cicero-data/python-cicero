@@ -101,15 +101,15 @@ class CiceroDomesticNongeocodingOfficialTests(CiceroBaseTest):
     def test_official_with_multi_district_type(self):
         self.blob = self.cicero.get_official(lat=40, lon=-75.1,
                                              district_type=("STATE_LOWER", "STATE_UPPER"))
-        officialOne = self.blob.response.results.officials[0]
-        officialTwo = self.blob.response.results.officials[1]
+        official_one = self.blob.response.results.officials[0]
+        official_two = self.blob.response.results.officials[1]
 
-        if "STATE_LOWER" in officialOne.office.district.values():
-            self.assertEqual(officialOne.office.district.district_type, "STATE_LOWER")
-            self.assertEqual(officialTwo.office.district.district_type, "STATE_UPPER")
-        elif "STATE_LOWER" in officialTwo.office.district.values():
-            self.assertEqual(officialTwo.office.district.district_type, "STATE_LOWER")
-            self.assertEqual(officialOne.office.district.district_type, "STATE_UPPER")
+        if official_one.office.district.district_type == "STATE_LOWER":
+            self.assertEqual(official_one.office.district.district_type, "STATE_LOWER")
+            self.assertEqual(official_two.office.district.district_type, "STATE_UPPER")
+        elif official_two.office.district.district_type == "STATE_LOWER":
+            self.assertEqual(official_two.office.district.district_type, "STATE_LOWER")
+            self.assertEqual(official_one.office.district.district_type, "STATE_UPPER")
         else:
             self.fail(msg="STATE_LOWER district_type not present when it had been requested")
 
@@ -125,19 +125,19 @@ class CiceroDomesticGeocodingOfficialTests(CiceroBaseTest):
         cand_two_official_one = self.blob.response.results.candidates[1].officials[0]
         cand_two_official_two = self.blob.response.results.candidates[1].officials[1]
 
-        if "STATE_LOWER" in cand_one_official_one.office.district.values():
+        if cand_one_official_one.office.district.district_type == "STATE_LOWER":
             self.assertEqual(cand_one_official_one.office.district.district_type, "STATE_LOWER")
             self.assertEqual(cand_one_official_two.office.district.district_type, "STATE_UPPER")
-        elif "STATE_LOWER" in cand_one_official_two.office.district.values():
+        elif cand_one_official_two.office.district.district_type == "STATE_LOWER":
             self.assertEqual(cand_one_official_two.office.district.district_type, "STATE_LOWER")
             self.assertEqual(cand_one_official_one.office.district.district_type, "STATE_UPPER")
         else:
             self.fail(msg="STATE_LOWER district_type not present in first candidate when it had been requested")	
 
-        if "STATE_LOWER" in cand_two_official_one.office.district.values():
+        if cand_two_official_one.office.district.district_type == "STATE_LOWER":
             self.assertEqual(cand_two_official_one.office.district.district_type, "STATE_LOWER")
             self.assertEqual(cand_two_official_two.office.district.district_type, "STATE_UPPER")
-        elif "STATE_LOWER" in cand_two_official_two.office.district.values():
+        elif cand_two_official_two.office.district.district_type == "STATE_LOWER":
             self.assertEqual(cand_two_official_two.office.district.district_type, "STATE_LOWER")
             self.assertEqual(cand_two_official_one.office.district.district_type, "STATE_UPPER")
         else:
@@ -147,9 +147,9 @@ class CiceroDomesticGeocodingOfficialTests(CiceroBaseTest):
     def test_official(self):
         self.blob = self.cicero.get_official(search_loc="340 N 12th St Philadelphia",
                                              district_type="STATE_LOWER")
-        officialOne = self.blob.response.results.candidates[0].officials[0]
+        official_one = self.blob.response.results.candidates[0].officials[0]
 
-        self.assertIsInstance(officialOne, OfficialObject)
+        self.assertIsInstance(official_one, OfficialObject)
 
 
 class CiceroElectionEventTests(CiceroBaseTest):
@@ -189,7 +189,7 @@ class CiceroAccountCallTests(CiceroBaseTest):
 
     def test_account_usage_object(self):
         self.blob = self.cicero.get_account_usage(first_time="2013-11")
-        self.assertEqual(self.blob.response.results[0], AccountUsageObject)
+        self.assertIsInstance(self.blob.response.results[0], AccountUsageObject)
 
 
 class CiceroDistrictTypeTests(CiceroBaseTest):
