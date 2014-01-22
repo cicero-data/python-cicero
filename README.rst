@@ -25,6 +25,20 @@ To make requests to the Cicero API, you will need a Cicero account. A free
 trial of the API is available by registering `here <http://www.azavea.com/products/cicero/free-trial/>`_. The process for
 purchasing additional API credits is described on the Cicero website.
 
+**Testing**
+
+There are a few ways to run the unit tests.
+
+One option is to use the shell script in the root of the repository
+called *test.example.sh*. Copy it using ``cp test.example.sh test.sh``.
+Edit *test.sh* to include your Cicero API username and password. Then, run
+the tests using ``./test.sh``.
+
+Another option is to edit the ``test/tests.py`` file directly, adding your
+Cicero API credentials where indicated. Doing so will allow you to execute
+tests using ``nosetests`` (if you have the nose package installed), or
+using ``python setup.py test``, or invoking the ``tests.py`` file itself.
+
 Documentation
 *************
 
