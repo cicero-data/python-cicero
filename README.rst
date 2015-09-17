@@ -52,7 +52,7 @@ Help!
 *****
 
 All of us at Azavea would be happy to help you get the most out of your
-Cicero API account. For questions about this wrapper, `contact us<http://www.azavea.com/products/cicero/support/>`_.
+Cicero API account. For questions about this wrapper, `contact us <http://www.azavea.com/products/cicero/support/>`_.
 
 License
 *******
