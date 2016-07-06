@@ -6,8 +6,6 @@ Python-Cicero provides a Pythonic "wrapper" to `Azavea's Cicero API <http://www.
 for address-based legislative and non-legislative district matching, lookup of
 elected official contact information, and election events.
 
-Note: Be sure to take a look at `the project page on Github <http://github.com/azavea/python-cicero/>`_.
-
 Installation / Setup
 ********************
 
@@ -22,7 +20,7 @@ generator as a dependency (see Documentation section below):
     pip install python-cicero['docs']
     
 To make requests to the Cicero API, you will need a Cicero account. A free
-trial of the API is available by registering `here <http://www.azavea.com/products/cicero/free-trial/>`_. The process for
+trial of the API is available by registering `here <https://www.cicerodata.com/free-trial/>`_. The process for
 purchasing additional API credits is described on the Cicero website.
 
 **Testing**
@@ -52,7 +50,7 @@ Help!
 *****
 
 All of us at Azavea would be happy to help you get the most out of your
-Cicero API account. For questions about this wrapper, `contact us <http://www.azavea.com/products/cicero/support/>`_.
+Cicero API account. For questions about this wrapper, `contact us <https://www.cicerodata.com/contact/>`_.
 
 License
 *******
